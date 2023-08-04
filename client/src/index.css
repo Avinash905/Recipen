@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #fffefc;
+  scroll-behavior: smooth;
+}
+
+nav .active {
+  @apply border-b-[2px] border-primary;
+}
+
+.box {
+  @apply max-w-7xl mx-auto px-6 mb-8 md:mb-10;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-gray-800;
+}
+
+::-webkit-scrollbar {
+  @apply w-2 bg-primaryLight;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply border-4 bg-gray-200;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply border-2 border-primaryLight bg-primaryLight;
+}

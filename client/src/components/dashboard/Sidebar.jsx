@@ -1,0 +1,86 @@
+import React from "react";
+import { FiMenu } from "react-icons/fi";
+import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { BiHomeAlt2 } from "react-icons/bi";
+import { BsFileEarmarkText } from "react-icons/bs";
+import { HiOutlineUsers, HiOutlineLogout } from "react-icons/hi";
+import { IoRestaurantOutline } from "react-icons/io5";
+import { Logo } from "..";
+
+const index = ({ isCollapsed, setIsCollapsed }) => {
+  return (
+    <motion.aside className="basis-0 h-screen p-6 flex flex-col justify-between bg-[#f4f4f4] border-r-2 border-gray-200">
+      <div className="flex flex-col gap-6">
+        <div
+          className={`flex ${
+            isCollapsed ? "flex-col" : "flex-row"
+          } justify-between items-center`}
+        >
+          <Logo hideName={isCollapsed ? true : false} />
+          {isCollapsed && <hr className="w-full my-6" />}
+          <FiMenu
+            className="cursor-pointer"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          />
+        </div>
+        <hr />
+        {/* Profile details */}
+        <div className="flex gap-2 items-center">
+          <div className="w-12 h-12">
+            <img
+              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=720&dpr=1"
+              alt=""
+              className="rounded-full border-primary border-2 w-full h-full object-cover"
+            />
+          </div>
+          {!isCollapsed && (
+            <div className="flex flex-col gap-1">
+              <h2 className="font-bold">John Doe</h2>
+              <p className="text-sm text-gray-500">example@abc.com</p>
+            </div>
+          )}
+        </div>
+        <hr />
+        {/* Navbar links */}
+        <div className="flex flex-col gap-6 pl-2">
+          <NavLink
+            to={"/"}
+            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+          >
+            <BiHomeAlt2 />
+            {!isCollapsed && "Home"}
+          </NavLink>
+          <NavLink
+            to={"/"}
+            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+          >
+            <HiOutlineUsers />
+            {!isCollapsed && "Users"}
+          </NavLink>
+          <NavLink
+            to={"/"}
+            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+          >
+            <IoRestaurantOutline />
+            {!isCollapsed && "Recipes"}
+          </NavLink>
+          <NavLink
+            to={"/"}
+            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+          >
+            <BsFileEarmarkText />
+            {!isCollapsed && "Blogs"}
+          </NavLink>
+        </div>
+      </div>
+      <hr />
+      <div className="mb-4 flex gap-2 items-center text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight hover:text-light p-2 cursor-pointer ml-2">
+        <HiOutlineLogout />
+        {!isCollapsed && "Logout"}
+      </div>
+    </motion.aside>
+  );
+};
+
+export default index;
