@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const client = mongoose
+const connectDB = mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
   })
@@ -14,4 +14,4 @@ const client = mongoose
     return error;
   });
 
-module.exports = client;
+module.exports = connectDB;

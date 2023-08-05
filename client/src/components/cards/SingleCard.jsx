@@ -39,6 +39,7 @@ const SingleCard = () => {
         <Rating
           rating={4}
           readOnly={true}
+          size={22}
         />
         {/* Read more link */}
         <Link

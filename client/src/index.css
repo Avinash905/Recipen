@@ -37,3 +37,30 @@ h6 {
 ::-webkit-scrollbar-thumb {
   @apply border-2 border-primaryLight bg-primaryLight;
 }
+
+.MuiDataGrid-root {
+  @apply border-none;
+}
+
+.MuiDataGrid-cell {
+  @apply border-none;
+}
+
+.MuiDataGrid-columnHeaders {
+  @apply border-2 border-primaryLight bg-gray-100;
+}
+
+.MuiDataGrid-columnHeaders .MuiSvgIcon-root,
+.MuiDataGrid-cellCheckbox .MuiSvgIcon-root {
+  font-size: large !important;
+  @apply text-primary;
+}
+
+.MuiDataGrid-toolbarContainer .MuiButton-text {
+  @apply text-gray-600;
+  font-size: smaller !important;
+}
+
+.MuiDataGrid-footerContainer {
+  @apply border-none bg-gray-100;
+}

@@ -26,6 +26,7 @@ const schema = mongoose.Schema(
     ],
     isAdmin: { type: Boolean, default: false },
     isSubscribed: { type: Boolean, default: false },
+    isDisabled: { type: Boolean, default: false },
   },
   {
     timestamps: true,

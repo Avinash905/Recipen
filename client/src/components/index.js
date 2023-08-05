@@ -15,6 +15,7 @@ import HomeCategories from "./homeCategories";
 import Subscribe from "./subscribe";
 import SubscribeCard from "./cards/SubscribeCard";
 import Sidebar from "./dashboard/Sidebar";
+import Table from "./dashboard/Table";
 
 export {
   Header,
@@ -34,4 +35,5 @@ export {
   Subscribe,
   SubscribeCard,
   Sidebar,
+  Table,
 };

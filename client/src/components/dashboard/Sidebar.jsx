@@ -46,28 +46,36 @@ const index = ({ isCollapsed, setIsCollapsed }) => {
         <div className="flex flex-col gap-6 pl-2">
           <NavLink
             to={"/"}
-            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+            className={`rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light ${
+              isCollapsed && "justify-center"
+            }`}
           >
             <BiHomeAlt2 />
             {!isCollapsed && "Home"}
           </NavLink>
           <NavLink
-            to={"/"}
-            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+            to={"/dashboard/users"}
+            className={`rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light ${
+              isCollapsed && "justify-center"
+            }`}
           >
             <HiOutlineUsers />
             {!isCollapsed && "Users"}
           </NavLink>
           <NavLink
-            to={"/"}
-            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+            to={"/dashboard/recipes"}
+            className={`rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light ${
+              isCollapsed && "justify-center"
+            }`}
           >
             <IoRestaurantOutline />
             {!isCollapsed && "Recipes"}
           </NavLink>
           <NavLink
-            to={"/"}
-            className="rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light"
+            to={"/dashboard/blogs"}
+            className={`rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight p-2 flex gap-2 items-center text-gray-600 hover:text-light ${
+              isCollapsed && "justify-center"
+            }`}
           >
             <BsFileEarmarkText />
             {!isCollapsed && "Blogs"}
@@ -75,7 +83,11 @@ const index = ({ isCollapsed, setIsCollapsed }) => {
         </div>
       </div>
       <hr />
-      <div className="mb-4 flex gap-2 items-center text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight hover:text-light p-2 cursor-pointer ml-2">
+      <div
+        className={`mb-4 flex gap-2 items-center text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight hover:text-light p-2 cursor-pointer ml-2 ${
+          isCollapsed && "justify-center"
+        }`}
+      >
         <HiOutlineLogout />
         {!isCollapsed && "Logout"}
       </div>

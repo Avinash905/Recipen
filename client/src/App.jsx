@@ -5,6 +5,8 @@ import {
   Blogs,
   Contact,
   Dashboard,
+  DashboardBlogs,
+  DashboardRecipes,
   Error,
   Home,
   Profile,
@@ -12,6 +14,7 @@ import {
   SavedRecipes,
   SingleBlog,
   SingleRecipe,
+  Users,
 } from "./pages";
 import { SignIn, SignUp } from "./pages/auth";
 import { RootLayout, DashboardLayout } from "./layouts";
@@ -27,6 +30,18 @@ function App() {
           <Route
             index
             element={<Dashboard />}
+          />
+          <Route
+            path="users"
+            element={<Users />}
+          />
+          <Route
+            path="recipes"
+            element={<DashboardRecipes />}
+          />
+          <Route
+            path="blogs"
+            element={<DashboardBlogs />}
           />
         </Route>
         <Route path="/auth">

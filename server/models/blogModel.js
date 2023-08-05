@@ -11,14 +11,6 @@ const schema = mongoose.Schema(
       ref: "User",
     },
     image: { type: String },
-    cookingTime: { type: String, required: true },
-    calories: { type: String, required: true },
-    ingredients: [
-      { type: String, required: [true, "Ingredients are required"] },
-    ],
-    cookingInstructions: [
-      { type: String, required: [true, "Instructions are required"] },
-    ],
     ratings: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -42,5 +34,5 @@ const schema = mongoose.Schema(
   }
 );
 
-const Recipe = mongoose.model("Recipe", schema);
-module.exports = Recipe;
+const Blog = mongoose.model("Blog", schema);
+module.exports = Blog;

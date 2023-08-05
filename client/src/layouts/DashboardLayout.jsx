@@ -11,7 +11,7 @@ const DashboardLayout = () => {
         setIsCollapsed={setIsCollapsed}
         isCollapsed={isCollapsed}
       />
-      <div className="basis-5/6">
+      <div className="basis-5/6 mx-auto">
         <Outlet />
       </div>
     </section>
