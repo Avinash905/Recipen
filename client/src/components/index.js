@@ -1,21 +1,22 @@
-import Header from "./header";
+import Header from "./header/Header";
 import Menu from "./header/Menu.jsx";
-import Footer from "./footer";
-import Input from "./input";
-import Button from "./button";
-import Logo from "./logo";
-import Loading from "./loading";
-import Hero from "./hero";
-import BackToTop from "./backToTop";
+import Footer from "./footer/Footer";
+import Input from "./input/Input";
+import Button from "./button/Button";
+import Logo from "./logo/Logo";
+import Loading from "./loading/Loading";
+import Hero from "./hero/Hero";
+import BackToTop from "./backToTop/BackToTop";
 import SingleCard from "./cards/SingleCard";
 import AllCards from "./cards/AllCards";
-import Rating from "./rating";
-import Comment from "./comment";
-import HomeCategories from "./homeCategories";
-import Subscribe from "./subscribe";
+import Rating from "./rating/Rating";
+import Comment from "./comment/Comment";
+import HomeCategories from "./homeCategories/HomeCategories";
+import Subscribe from "./subscribe/Subscribe";
 import SubscribeCard from "./cards/SubscribeCard";
 import Sidebar from "./dashboard/Sidebar";
 import Table from "./dashboard/Table";
+import Avatar from "./avatar/Avatar";
 
 export {
   Header,
@@ -36,4 +37,5 @@ export {
   SubscribeCard,
   Sidebar,
   Table,
+  Avatar,
 };

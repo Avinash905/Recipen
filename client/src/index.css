@@ -64,3 +64,11 @@ h6 {
 .MuiDataGrid-footerContainer {
   @apply border-none bg-gray-100;
 }
+
+input:invalid[focused="true"] {
+  @apply border-red-500;
+}
+
+input:invalid[focused="true"] ~ span {
+  @apply block;
+}

@@ -24,6 +24,7 @@ const Menu = ({ isCollapsed, setIsCollapsed }) => {
             <li>
               <NavLink
                 to={"/"}
+                onClick={() => setIsCollapsed(!isCollapsed)}
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
               >
                 Home
@@ -32,6 +33,7 @@ const Menu = ({ isCollapsed, setIsCollapsed }) => {
             <li>
               <NavLink
                 to={"/recipe"}
+                onClick={() => setIsCollapsed(!isCollapsed)}
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
               >
                 Recipes
@@ -40,6 +42,7 @@ const Menu = ({ isCollapsed, setIsCollapsed }) => {
             <li>
               <NavLink
                 to={"/blog"}
+                onClick={() => setIsCollapsed(!isCollapsed)}
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
               >
                 Blogs
@@ -48,13 +51,17 @@ const Menu = ({ isCollapsed, setIsCollapsed }) => {
             <li>
               <NavLink
                 to={"/contact"}
+                onClick={() => setIsCollapsed(!isCollapsed)}
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
               >
                 Contact
               </NavLink>
             </li>
             <li className="w-full">
-              <Link to={"/auth/signin"}>
+              <Link
+                to={"/auth/signin"}
+                onClick={() => setIsCollapsed(!isCollapsed)}
+              >
                 <Button
                   content={"Sign In"}
                   customCss={"w-full gap-4 rounded-full flex-row-reverse"}

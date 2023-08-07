@@ -4,9 +4,15 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userController");
+const ROLES_LIST = require("../config/rolesList");
+const verifyRoles = require("../middleware/verifyRoles");
 
 const router = express.Router();
 
-router.route("/").get(getAllUsers).put(updateUser).delete(deleteUser);
+router
+  .route("/")
+  .get(verifyRoles(ROLES_LIST.Admin), getAllUsers)
+  .put(verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser), updateUser)
+  .delete(verifyRoles(ROLES_LIST.Admin), deleteUser);
 
 module.exports = router;

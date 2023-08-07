@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "../../components";
 import { photo } from "../../assets";
+import uploadImage from "../../common/uploadImage";
+import { Grid, LinearProgress } from "@mui/material";
+import { toast } from "react-toastify";
+import { useAddBlogMutation } from "../../features/blog/blogApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const AddBlog = () => {
   const [formDetails, setFormDetails] = useState({
@@ -8,14 +13,49 @@ const AddBlog = () => {
     image: "",
     description: "",
   });
+  const [progress, setProgress] = useState(0);
+  const [focused, setFocused] = useState({
+    title: "",
+  });
+  const [addBlog, { isLoading }] = useAddBlogMutation();
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
+  const handleFocus = (e) => {
+    setFocused({ ...focused, [e.target.id]: true });
   };
 
-  const handleSubmit = () => {};
+  const handleChange = (e) => {
+    if (e.target.id === "image") {
+      uploadImage(e, setProgress, setFormDetails, formDetails);
+    } else {
+      setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
+    }
+  };
 
-  const handleImageUpload = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formDetails.image) return toast.error("Upload blog image");
+    if (!formDetails.description)
+      return toast.error("Blog content cannot be empty");
+
+    try {
+      const blog = await toast.promise(addBlog({ ...formDetails }).unwrap(), {
+        pending: "Please wait...",
+        success: "Blog added successfully",
+        error: "Unable to add blog",
+      });
+      setFormDetails({
+        title: "",
+        image: "",
+        description: "",
+      });
+      navigate("/blog");
+    } catch (error) {
+      toast.error(error.data);
+      console.error(error);
+    }
+  };
 
   return (
     <section className="box flex flex-col gap-6">
@@ -39,24 +79,28 @@ const AddBlog = () => {
                 onChange={handleChange}
                 value={formDetails.title}
                 id="title"
+                name="name"
+                onBlur={handleFocus}
+                focused={focused.title.toString()}
+                pattern={"^.{5,}$"}
                 required
                 aria-required="true"
                 aria-describedby="title-error"
-                placeholder="Enter recipe title"
-                className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary"
+                placeholder="Enter blog title"
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary"
               />
               <span
                 id="title-error"
-                className="text-red-500 pl-2 text-sm mt-1"
+                className="hidden text-red-500 pl-2 text-sm mt-1"
               >
-                Invalid email
+                Title should at least 5 characters long
               </span>
             </div>
           </div>
           <hr />
           <div className="flex flex-col gap-3 justify-between">
             <label
-              htmlFor="ingredient"
+              htmlFor="content"
               className="text-sm font-semibold mb-3 basis-1/2"
             >
               Content
@@ -70,20 +114,14 @@ const AddBlog = () => {
                 required
                 rows="10"
                 aria-required="true"
-                aria-describedby="description-error"
-                placeholder="Write your steps here..."
-                className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
+                placeholder="Write your blog content here..."
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
               ></textarea>
-              <span
-                id="description-error"
-                className="text-red-500 pl-2 text-sm mt-1 mb-3"
-              >
-                Invalid email
-              </span>
             </div>
           </div>
           <Button
-            content={"Save changes"}
+            content={"Add blog"}
+            type={"submit"}
             customCss={"rounded px-4 py-1 max-w-max"}
           />
         </div>
@@ -94,11 +132,22 @@ const AddBlog = () => {
             htmlFor="image"
             className="font-bold cursor-pointer flex flex-col justify-center items-center"
           >
-            <div className="w-[30%] mb-6">
-              <img
-                src={photo}
-                alt="upload photo"
-              />
+            <div
+              className={formDetails.image ? "w-[65%] mb-2" : "w-[30%] mb-6"}
+            >
+              {progress > 0 && progress < 100 ? (
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
+                  color="warning"
+                />
+              ) : (
+                <img
+                  src={formDetails.image || photo}
+                  alt="upload photo"
+                  className="w-full "
+                />
+              )}
             </div>
             <p className="text-center">
               Drag your image here, or
@@ -109,8 +158,7 @@ const AddBlog = () => {
             type="file"
             id="image"
             className="hidden"
-            value={formDetails.image}
-            onChange={handleImageUpload}
+            onChange={handleChange}
           />
         </div>
       </form>

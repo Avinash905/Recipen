@@ -4,21 +4,17 @@ const schema = mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    description: { type: String },
     image: { type: String },
-    cookingTime: { type: String, required: true },
-    calories: { type: String, required: true },
-    ingredients: [
-      { type: String, required: [true, "Ingredients are required"] },
-    ],
-    cookingInstructions: [
-      { type: String, required: [true, "Instructions are required"] },
-    ],
+    cookingTime: { type: String },
+    calories: { type: String },
+    ingredients: [{ type: String }],
+    instructions: [{ type: String }],
     ratings: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -33,6 +29,10 @@ const schema = mongoose.Schema(
         },
         comment: {
           type: String,
+        },
+        date: {
+          type: Date,
+          default: Date.now(),
         },
       },
     ],

@@ -18,32 +18,45 @@ import {
 } from "./pages";
 import { SignIn, SignUp } from "./pages/auth";
 import { RootLayout, DashboardLayout } from "./layouts";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import RequireAuth from "./layouts/RequireAuth";
+import ROLES from "./common/roles";
 
 function App() {
   return (
     <Router>
+      <ToastContainer
+        autoClose={5000}
+        closeOnClick
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+      />
       <Routes>
-        <Route
-          path="/dashboard"
-          element={<DashboardLayout />}
-        >
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
           <Route
-            index
-            element={<Dashboard />}
-          />
-          <Route
-            path="users"
-            element={<Users />}
-          />
-          <Route
-            path="recipes"
-            element={<DashboardRecipes />}
-          />
-          <Route
-            path="blogs"
-            element={<DashboardBlogs />}
-          />
+            path="/dashboard"
+            element={<DashboardLayout />}
+          >
+            <Route
+              index
+              element={<Dashboard />}
+            />
+            <Route
+              path="users"
+              element={<Users />}
+            />
+            <Route
+              path="recipes"
+              element={<DashboardRecipes />}
+            />
+            <Route
+              path="blogs"
+              element={<DashboardBlogs />}
+            />
+          </Route>
         </Route>
+
         <Route path="/auth">
           <Route
             path="signin"
@@ -54,6 +67,7 @@ function App() {
             element={<SignUp />}
           />
         </Route>
+
         <Route
           path="/"
           element={<RootLayout />}
@@ -76,9 +90,15 @@ function App() {
               element={<SavedRecipes />}
             />
             <Route
-              path="add"
-              element={<AddRecipe />}
-            />
+              element={
+                <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
+              }
+            >
+              <Route
+                path="add"
+                element={<AddRecipe />}
+              />
+            </Route>
           </Route>
           <Route
             path="contact"
@@ -94,9 +114,15 @@ function App() {
               element={<SingleBlog />}
             />
             <Route
-              path="add"
-              element={<AddBlog />}
-            />
+              element={
+                <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
+              }
+            >
+              <Route
+                path="add"
+                element={<AddBlog />}
+              />
+            </Route>
           </Route>
           <Route
             path="profile"

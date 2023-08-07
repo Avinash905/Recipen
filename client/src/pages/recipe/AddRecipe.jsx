@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { Button } from "../../components";
 import { photo } from "../../assets";
 import { RxCross2 } from "react-icons/rx";
+import uploadImage from "../../common/uploadImage";
+import { Grid, LinearProgress } from "@mui/material";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useAddRecipeMutation } from "../../features/recipe/recipeApiSlice";
 
 const AddRecipe = () => {
   const [formDetails, setFormDetails] = useState({
-    name: "",
+    title: "",
     image: "",
     description: "",
     calories: "",
@@ -13,16 +18,83 @@ const AddRecipe = () => {
     ingredients: [],
     instructions: [],
   });
+  const [progress, setProgress] = useState(0);
   const [ingredient, setIngredient] = useState("");
   const [instruction, setInstruction] = useState("");
+  const [focused, setFocused] = useState({
+    title: "",
+    calories: "",
+    cookingTime: "",
+    ingredient: "",
+  });
+  const [addRecipe, { isLoading }] = useAddRecipeMutation();
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
+  const handleFocus = (e) => {
+    setFocused({ ...focused, [e.target.id]: true });
   };
 
-  const handleSubmit = () => {};
+  const handleChange = (e) => {
+    if (e.target.id === "image") {
+      uploadImage(e, setProgress, setFormDetails, formDetails);
+    } else {
+      setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
+    }
+  };
 
-  const handleImageUpload = () => {};
+  const addIngredient = () => {
+    if (!ingredient) {
+      return toast.error("Ingredient cannot be empty");
+    }
+    const updatedFormDetails = { ...formDetails };
+    updatedFormDetails.ingredients.push(ingredient);
+    setFormDetails(updatedFormDetails);
+    setIngredient("");
+  };
+
+  const addInstruction = () => {
+    if (!instruction) {
+      return toast.error("Instruction cannot be empty");
+    }
+    const updatedFormDetails = { ...formDetails };
+    updatedFormDetails.instructions.push(instruction);
+    setFormDetails(updatedFormDetails);
+    setInstruction("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formDetails.image) return toast.error("Upload recipe image");
+    if (!formDetails.ingredients.length)
+      return toast.error("Ingredients cannot be empty");
+    if (!formDetails.instructions.length)
+      return toast.error("Instructions cannot be empty");
+
+    try {
+      const recipe = await toast.promise(
+        addRecipe({ ...formDetails }).unwrap(),
+        {
+          pending: "Please wait...",
+          success: "Recipe added successfully",
+          error: "Unable to add recipe",
+        }
+      );
+      setFormDetails({
+        title: "",
+        image: "",
+        description: "",
+        calories: "",
+        cookingTime: "",
+        ingredients: [],
+        instructions: [],
+      });
+      navigate("/recipe");
+    } catch (error) {
+      toast.error(error.data);
+      console.error(error);
+    }
+  };
 
   return (
     <section className="box flex flex-col gap-6">
@@ -44,20 +116,47 @@ const AddRecipe = () => {
               <input
                 type="text"
                 onChange={handleChange}
-                value={formDetails.name}
-                id="name"
+                value={formDetails.title}
+                id="title"
+                name="title"
+                onBlur={handleFocus}
+                focused={focused.title.toString()}
+                pattern={"^.{3,}$"}
                 required
                 aria-required="true"
-                aria-describedby="name-error"
+                aria-describedby="title-error"
                 placeholder="Enter recipe name"
-                className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary"
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary"
               />
               <span
-                id="name-error"
-                className="text-red-500 pl-2 text-sm mt-1"
+                id="title-error"
+                className="hidden text-red-500 pl-2 text-sm mt-1"
               >
-                Invalid email
+                Name should at least 3 characters long
               </span>
+            </div>
+          </div>
+          <hr />
+          <div className="flex flex-col sm:flex-row justify-between">
+            <label
+              htmlFor="cookingTime"
+              className="text-sm font-semibold mb-3 basis-1/2"
+            >
+              Recipe description
+            </label>
+            <div className="flex flex-col basis-1/2">
+              <textarea
+                type="text"
+                onChange={handleChange}
+                value={formDetails.description}
+                id="description"
+                required
+                name="description"
+                rows="5"
+                aria-required="true"
+                placeholder="Enter your description here..."
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
+              ></textarea>
             </div>
           </div>
           <hr />
@@ -75,16 +174,19 @@ const AddRecipe = () => {
                 value={formDetails.calories}
                 id="calories"
                 required
+                name="calories"
+                onBlur={handleFocus}
+                focused={focused.calories.toString()}
                 aria-required="true"
                 aria-describedby="calories-error"
                 placeholder="Enter total calories"
-                className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary"
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary"
               />
               <span
                 id="calories-error"
-                className="text-red-500 pl-2 text-sm mt-1"
+                className="hidden text-red-500 pl-2 text-sm mt-1"
               >
-                Invalid email
+                Should not include letters or special characters
               </span>
             </div>
           </div>
@@ -103,16 +205,19 @@ const AddRecipe = () => {
                 value={formDetails.cookingTime}
                 id="cookingTime"
                 required
+                name="cookingTime"
+                onBlur={handleFocus}
+                focused={focused.cookingTime.toString()}
                 aria-required="true"
                 aria-describedby="cookingTime-error"
                 placeholder="Total cooking time in mins."
-                className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary"
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary"
               />
               <span
                 id="cookingTime-error"
-                className="text-red-500 pl-2 text-sm mt-1"
+                className="hidden text-red-500 pl-2 text-sm mt-1"
               >
-                Invalid email
+                Must only include numbers
               </span>
             </div>
           </div>
@@ -125,39 +230,38 @@ const AddRecipe = () => {
               Add ingredients
             </label>
             <div className="flex flex-col basis-1/2">
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-2">
                 <div className="flex gap-1 justify-between">
                   <input
                     type="text"
                     onChange={(e) => setIngredient(e.target.value)}
                     value={ingredient}
                     id="ingredient"
-                    required
+                    name="ingredient"
+                    onBlur={handleFocus}
+                    focused={focused.ingredient.toString()}
+                    pattern={"^.{3,}$"}
                     aria-required="true"
                     aria-describedby="ingredient-error"
                     placeholder="2 medium onion"
-                    className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary w-full"
+                    className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full"
                   />
                   <Button
                     content={"Add"}
                     customCss={"rounded text-sm px-4 py-1"}
+                    handleClick={addIngredient}
                   />
                 </div>
-                <span
-                  id="ingredient-error"
-                  className="text-red-500 pl-2 text-sm mt-1 mb-3"
-                >
-                  Invalid email
-                </span>
                 <ul className="flex flex-col gap-2">
-                  <li className="flex justify-between items-center shadow hover:shadow-md rounded p-2 gap-2">
-                    2 medium onions
-                    <RxCross2 className="cursor-pointer" />
-                  </li>
-                  <li className="flex justify-between items-center shadow hover:shadow-md rounded p-2 gap-2">
-                    2 medium onions
-                    <RxCross2 className="cursor-pointer" />
-                  </li>
+                  {formDetails.ingredients.map((ele) => (
+                    <li
+                      className="flex justify-between items-center shadow hover:shadow-md rounded p-2 gap-2"
+                      key={ele}
+                    >
+                      {ele}
+                      <RxCross2 className="cursor-pointer" />
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -174,41 +278,46 @@ const AddRecipe = () => {
               <Button
                 content={"Add"}
                 customCss={"rounded text-sm px-4 py-1"}
+                handleClick={addInstruction}
               />
             </div>
-            <div className="flex flex-col basis-1/2">
+            <div className="flex flex-col basis-1/2 gap-2">
               <textarea
                 type="text"
                 onChange={(e) => setInstruction(e.target.value)}
                 value={instruction}
                 id="instruction"
-                required
+                name="instruction"
                 rows="7"
                 aria-required="true"
-                aria-describedby="instruction-error"
                 placeholder="Write your steps here..."
-                className="p-1.5 border-red-500 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
               ></textarea>
-              <span
-                id="instruction-error"
-                className="text-red-500 pl-2 text-sm mt-1 mb-3"
-              >
-                Invalid email
-              </span>
               {/* All added instructions */}
               <ul className="flex flex-col gap-2">
-                <li className="flex justify-between items-start gap-4 shadow hover:shadow-md rounded p-2">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Molestiae cum excepturi quae, dolorem suscipit quas nam amet
-                  blanditiis officia vitae quisquam modi necessitatibus
-                  reiciendis asperiores ut voluptates vero autem quo.
-                  <RxCross2 className="cursor-pointer text-5xl" />
-                </li>
+                {formDetails.instructions.map((ele, i) => (
+                  <li
+                    className="flex justify-between items-start gap-4 shadow hover:shadow-md rounded p-2"
+                    key={`step-${i}`}
+                  >
+                    <div className="flex flex-col">
+                      <h3 className="font-bold">Step {i + 1}</h3>
+                      <p className="text-sm text-gray-700">{ele}</p>
+                    </div>
+                    <div>
+                      <RxCross2
+                        className="cursor-pointer"
+                        size={20}
+                      />
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
           <Button
-            content={"Save changes"}
+            content={"Add recipe"}
+            type={"submit"}
             customCss={"rounded px-4 py-1 max-w-max"}
           />
         </div>
@@ -217,13 +326,24 @@ const AddRecipe = () => {
         <div className="basis-1/3 rounded-xl shadow-md hover:shadow-primary hover:shadow flex justify-center items-center w-full p-8 max-h-[300px]">
           <label
             htmlFor="image"
-            className="font-bold cursor-pointer flex flex-col justify-center items-center"
+            className="font-bold cursor-pointer flex flex-col justify-center items-center w-full"
           >
-            <div className="w-[30%] mb-6">
-              <img
-                src={photo}
-                alt="upload photo"
-              />
+            <div
+              className={formDetails.image ? "w-[65%] mb-2" : "w-[30%] mb-6"}
+            >
+              {progress > 0 && progress < 100 ? (
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
+                  color="warning"
+                />
+              ) : (
+                <img
+                  src={formDetails.image || photo}
+                  alt="upload photo"
+                  className="w-full "
+                />
+              )}
             </div>
             <p className="text-center">
               Drag your image here, or
@@ -234,8 +354,7 @@ const AddRecipe = () => {
             type="file"
             id="image"
             className="hidden"
-            value={formDetails.image}
-            onChange={handleImageUpload}
+            onChange={handleChange}
           />
         </div>
       </form>

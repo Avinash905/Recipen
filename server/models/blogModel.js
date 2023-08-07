@@ -4,17 +4,19 @@ const schema = mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    description: {
+      type: String,
+    },
     image: { type: String },
     ratings: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        rating: { type: Number, min: 1, max: 5 },
+        rating: { type: Number },
       },
     ],
     comments: [

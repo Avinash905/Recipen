@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, SingleCard } from "..";
 
-const index = ({ mainTitle, tagline, type }) => {
+const index = ({ mainTitle, tagline, type, data }) => {
   return (
     <section className="box flex flex-col items-center">
       <div className="flex flex-col items-center gap-5 w-full mb-10">
@@ -26,10 +26,16 @@ const index = ({ mainTitle, tagline, type }) => {
       </div>
       <div className="flex flex-col gap-8">
         {/* Sub heading */}
-        <h3 className="font-bold text-xl">Recent {type}</h3>
+        <h3 className="font-bold text-xl">Recent {type}s</h3>
         {/* Cards container */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-          <SingleCard />
+          {data?.map((singleData) => (
+            <SingleCard
+              key={singleData._id}
+              singleData={singleData}
+              type={type}
+            />
+          ))}
         </div>
       </div>
     </section>
