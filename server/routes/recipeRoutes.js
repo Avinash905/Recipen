@@ -4,11 +4,14 @@ const {
   getRecipe,
   addRecipe,
   updateRecipe,
+  rateRecipe,
   deleteRecipe,
   addComment,
   deleteComment,
+  toggleFavoriteRecipe,
 } = require("../controllers/recipeController");
 const ROLES_LIST = require("../config/rolesList");
+const verifyJwt = require("../middleware/verifyJWT");
 const verifyRoles = require("../middleware/verifyRoles");
 
 const router = express.Router();
@@ -16,21 +19,61 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllRecipes)
-  .post(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser), addRecipe)
-  .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser), updateRecipe)
-  .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser), deleteRecipe);
-
-router.route("/:id").get(getRecipe);
+  .post(
+    [verifyJwt, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser)],
+    addRecipe
+  );
 
 router
-  .route("/comment")
-  .post(
-    verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
-    addComment
+  .route("/rate/:id")
+  .put(
+    [
+      verifyJwt,
+      verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
+    ],
+    rateRecipe
+  );
+
+router
+  .route("/:id")
+  .get(getRecipe)
+  .put(
+    [verifyJwt, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser)],
+    updateRecipe
   )
   .delete(
-    verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
+    [verifyJwt, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser)],
+    deleteRecipe
+  );
+
+router
+  .route("/comment/:id")
+  .put(
+    [
+      verifyJwt,
+      verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
+    ],
+    addComment
+  );
+
+router
+  .route("/comment/:recipeId/:commentId")
+  .delete(
+    [
+      verifyJwt,
+      verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
+    ],
     deleteComment
+  );
+
+router
+  .route("/favorite/:id")
+  .put(
+    [
+      verifyJwt,
+      verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
+    ],
+    toggleFavoriteRecipe
   );
 
 module.exports = router;

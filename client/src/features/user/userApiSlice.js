@@ -3,20 +3,33 @@ import { apiSlice } from "../../redux/apiSlice";
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/api/user",
+      query: () => "/user",
+      providesTags: ["users"],
     }),
     updateUser: builder.mutation({
-      query: (userData, userId) => ({
-        url: `/api/user/${userId}`,
-        method: "PUT",
-        body: { ...userData },
-      }),
+      query: (args) => {
+        const { userId, ...userData } = args;
+        return {
+          url: `/user/${userId}`,
+          method: "PUT",
+          body: { ...userData },
+        };
+      },
+      invalidatesTags: ["users"],
     }),
-    deleteUser: builder.mutation({
+    disableUser: builder.mutation({
       query: (userId) => ({
-        url: `/api/user/${userId}`,
-        method: "DELETE",
+        url: `/user/disable/${userId}`,
+        method: "PUT",
       }),
+      invalidatesTags: ["users"],
+    }),
+    subscribeUser: builder.mutation({
+      query: () => ({
+        url: `/stripe/create-checkout-session`,
+        method: "POST",
+      }),
+      invalidatesTags: ["users"],
     }),
   }),
 });
@@ -24,5 +37,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetUsersQuery,
   useUpdateUserMutation,
-  useDeleteUserMutation,
+  useDisableUserMutation,
+  useSubscribeUserMutation,
 } = userApiSlice;

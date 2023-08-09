@@ -7,16 +7,24 @@ import {
   Dashboard,
   DashboardBlogs,
   DashboardRecipes,
+  EditBlog,
+  EditRecipe,
   Error,
   Home,
+  MyBlogs,
+  MyRecipes,
   Profile,
   Recipe,
   SavedRecipes,
   SingleBlog,
   SingleRecipe,
   Users,
+  SignIn,
+  SignUp,
+  CheckoutSuccess,
+  CheckoutFailure,
 } from "./pages";
-import { SignIn, SignUp } from "./pages/auth";
+import { ScrollToTop } from "./components";
 import { RootLayout, DashboardLayout } from "./layouts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +34,7 @@ import ROLES from "./common/roles";
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <ToastContainer
         autoClose={5000}
         closeOnClick
@@ -89,6 +98,7 @@ function App() {
               path="saved"
               element={<SavedRecipes />}
             />
+
             <Route
               element={
                 <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
@@ -97,6 +107,14 @@ function App() {
               <Route
                 path="add"
                 element={<AddRecipe />}
+              />
+              <Route
+                path="my-recipes"
+                element={<MyRecipes />}
+              />
+              <Route
+                path="edit/:id"
+                element={<EditRecipe />}
               />
             </Route>
           </Route>
@@ -122,12 +140,36 @@ function App() {
                 path="add"
                 element={<AddBlog />}
               />
+              <Route
+                path="my-blogs"
+                element={<MyBlogs />}
+              />
+              <Route
+                path="edit/:id"
+                element={<EditBlog />}
+              />
             </Route>
           </Route>
           <Route
-            path="profile"
-            element={<Profile />}
-          />
+            element={
+              <RequireAuth
+                allowedRoles={[ROLES.BasicUser, ROLES.ProUser, ROLES.Admin]}
+              />
+            }
+          >
+            <Route
+              path="profile"
+              element={<Profile />}
+            />
+            <Route
+              path="payment-success"
+              element={<CheckoutSuccess />}
+            />
+            <Route
+              path="payment-failed"
+              element={<CheckoutFailure />}
+            />
+          </Route>
           <Route
             path="/*"
             element={<Error />}

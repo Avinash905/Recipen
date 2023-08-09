@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, SingleCard } from "..";
+import { Button, NoData, SingleCard } from "..";
 import { BsArrowUpRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
@@ -18,15 +18,19 @@ const HomeCategories = ({ title, data }) => {
       </div>
       <hr className="w-full" />
       {/* Cards container */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-        {data?.slice(0, 4).map((singleData) => (
-          <SingleCard
-            key={singleData._id}
-            singleData={singleData}
-            type={title}
-          />
-        ))}
-      </div>
+      {data?.length ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+          {data?.slice(0, 4).map((singleData) => (
+            <SingleCard
+              key={singleData._id}
+              singleData={singleData}
+              type={title}
+            />
+          ))}
+        </div>
+      ) : (
+        <NoData text={"Data"} />
+      )}
     </section>
   );
 };

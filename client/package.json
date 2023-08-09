@@ -24,9 +24,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
+    "react-markdown": "^8.0.7",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.2",
-    "react-simple-star-rating": "^5.1.7",
+    "react-share": "^4.4.1",
     "react-toastify": "^9.1.3"
   },
   "devDependencies": {

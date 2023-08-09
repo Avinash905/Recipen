@@ -9,7 +9,6 @@ import Hero from "./hero/Hero";
 import BackToTop from "./backToTop/BackToTop";
 import SingleCard from "./cards/SingleCard";
 import AllCards from "./cards/AllCards";
-import Rating from "./rating/Rating";
 import Comment from "./comment/Comment";
 import HomeCategories from "./homeCategories/HomeCategories";
 import Subscribe from "./subscribe/Subscribe";
@@ -17,6 +16,9 @@ import SubscribeCard from "./cards/SubscribeCard";
 import Sidebar from "./dashboard/Sidebar";
 import Table from "./dashboard/Table";
 import Avatar from "./avatar/Avatar";
+import ScrollToTop from "./scrollToTop/ScrollToTop";
+import ShareButton from "./shareButton/ShareButton";
+import NoData from "./noData/NoData";
 
 export {
   Header,
@@ -30,7 +32,6 @@ export {
   BackToTop,
   SingleCard,
   AllCards,
-  Rating,
   Comment,
   HomeCategories,
   Subscribe,
@@ -38,4 +39,7 @@ export {
   Sidebar,
   Table,
   Avatar,
+  ScrollToTop,
+  ShareButton,
+  NoData,
 };

@@ -3,7 +3,6 @@ import { Button, Input, Logo } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
-import { GoogleLogin } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "../../features/auth/authApiSlice";
 import { toast } from "react-toastify";
@@ -107,23 +106,9 @@ const SignUp = () => {
             content={"Sign in"}
             type={"submit"}
             customCss={"mt-3 rounded-lg"}
-            isLoading={isLoading}
+            loading={isLoading}
           />
         </form>
-        <div className="flex gap-4 mt-8 items-center">
-          <div className="w-full h-[1px] bg-gray-200"></div>
-          <p className="text-gray-500">or</p>
-          <div className="w-full h-[1px] bg-gray-200"></div>
-        </div>
-        {/* Sign up with google */}
-        {/* <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        /> */}
       </div>
       {/* Sign up banner image */}
       <div className="hidden md:block basis-1/2 bg-login bg-no-repeat bg-cover bg-center"></div>

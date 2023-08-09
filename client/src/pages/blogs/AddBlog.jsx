@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Button } from "../../components";
 import { photo } from "../../assets";
 import uploadImage from "../../common/uploadImage";
-import { Grid, LinearProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import { useAddBlogMutation } from "../../features/blog/blogApiSlice";
-import { useNavigate } from "react-router-dom";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const AddBlog = () => {
   const [formDetails, setFormDetails] = useState({
@@ -18,7 +18,6 @@ const AddBlog = () => {
     title: "",
   });
   const [addBlog, { isLoading }] = useAddBlogMutation();
-  const navigate = useNavigate();
 
   const handleFocus = (e) => {
     setFocused({ ...focused, [e.target.id]: true });
@@ -45,12 +44,14 @@ const AddBlog = () => {
         success: "Blog added successfully",
         error: "Unable to add blog",
       });
-      setFormDetails({
+      // setFormDetails({
+      //   title: "",
+      //   image: "",
+      //   description: "",
+      // });
+      setFocused({
         title: "",
-        image: "",
-        description: "",
       });
-      navigate("/blog");
     } catch (error) {
       toast.error(error.data);
       console.error(error);
@@ -68,7 +69,7 @@ const AddBlog = () => {
         <div className="basis-1/2 flex flex-col gap-5">
           <div className="flex flex-col sm:flex-row justify-between">
             <label
-              htmlFor="name"
+              htmlFor="title"
               className="text-sm font-semibold mb-3 basis-1/2"
             >
               Blog title
@@ -100,12 +101,12 @@ const AddBlog = () => {
           <hr />
           <div className="flex flex-col gap-3 justify-between">
             <label
-              htmlFor="content"
+              htmlFor="description"
               className="text-sm font-semibold mb-3 basis-1/2"
             >
               Content
             </label>
-            <div className="flex flex-col basis-1/2">
+            <div className="flex flex-col basis-1/2 gap-4">
               <textarea
                 type="text"
                 onChange={handleChange}
@@ -114,15 +115,21 @@ const AddBlog = () => {
                 required
                 rows="10"
                 aria-required="true"
-                placeholder="Write your blog content here..."
-                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
+                placeholder="You can write your content in markdown..."
+                className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none mb-4"
               ></textarea>
+              <hr />
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-sm">Preview</h3>
+                <ReactMarkdown>{formDetails.description}</ReactMarkdown>
+              </div>
             </div>
           </div>
           <Button
             content={"Add blog"}
             type={"submit"}
             customCss={"rounded px-4 py-1 max-w-max"}
+            loading={isLoading}
           />
         </div>
         <hr className="block md:hidden mt-6" />

@@ -1,10 +1,26 @@
 import React from "react";
 import { BsCalendarCheck } from "react-icons/bs";
-import { Avatar as MuiAvatar } from "@mui/material";
+import { IconButton, Menu, MenuItem, Avatar as MuiAvatar } from "@mui/material";
 import dateFormat from "../../common/dateFormat";
+import { MoreVert } from "@mui/icons-material";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, userId, handleDeleteComment }) => {
   const formattedDate = dateFormat(comment?.date);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    setAnchorEl(null);
+    handleDeleteComment(comment?._id);
+  };
 
   return (
     <div className="border-2 border-gray-200 rounded-xl flex flex-col sm:flex-row gap-4 p-6 items-center">
@@ -24,7 +40,35 @@ const Comment = ({ comment }) => {
           </span>
         </div>
         {/* Comment content */}
-        <p>{comment?.comment}</p>
+        <div className="flex justify-between">
+          <p>{comment?.comment}</p>
+          {comment?.user?._id === userId && (
+            <>
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? "long-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+                size="small"
+                onClick={handleClick}
+              >
+                <MoreVert />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                MenuListProps={{
+                  "aria-labelledby": "long-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              </Menu>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

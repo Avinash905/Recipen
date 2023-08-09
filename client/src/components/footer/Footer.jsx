@@ -83,7 +83,10 @@ const Footer = () => {
             className="border border-primary p-1 rounded-full hover:text-gray-500"
             whileHover={{ y: -4 }}
           >
-            <a href="https://github.com/Avinash905">
+            <a
+              href="https://github.com/Avinash905"
+              aria-label="Follow me on github"
+            >
               <AiFillGithub />
             </a>
           </motion.li>
@@ -91,7 +94,10 @@ const Footer = () => {
             className="border border-primary p-1 rounded-full hover:text-blue-400"
             whileHover={{ y: -4 }}
           >
-            <a href="https://twitter.com/avinashdunna">
+            <a
+              href="https://twitter.com/avinashdunna"
+              aria-label="Follow me on twitter"
+            >
               <AiFillTwitterCircle />
             </a>
           </motion.li>
@@ -99,7 +105,10 @@ const Footer = () => {
             className="border border-primary p-1 rounded-full hover:text-blue-600"
             whileHover={{ y: -4 }}
           >
-            <a href="https://www.linkedin.com/in/dunna-avinash">
+            <a
+              href="https://www.linkedin.com/in/dunna-avinash"
+              aria-label="Follow me on linkedin"
+            >
               <AiFillLinkedin />
             </a>
           </motion.li>

@@ -4,7 +4,6 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
-const verifyJwt = require("./middleware/verifyJWT");
 const credentials = require("./middleware/credentials");
 const cookieParser = require("cookie-parser");
 
@@ -23,10 +22,10 @@ app.use(express.json());
 
 // route middleware
 app.use("/api/auth", require("./routes/authRoutes"));
-app.use(verifyJwt);
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/recipe", require("./routes/recipeRoutes"));
 app.use("/api/blog", require("./routes/blogRoutes"));
+app.use("/api/stripe", require("./routes/subscriptionRoutes"));
 
 app.use(errorHandler);
 

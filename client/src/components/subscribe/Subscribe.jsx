@@ -23,18 +23,19 @@ const Subscribe = () => {
           price={"Free"}
           subtitle={"Perfect to get started"}
           featureTitle={"Basic includes:"}
-          features={["hello1", "hello2"]}
+          features={["Access to recipes", "Access to blogs", "Save recipes"]}
           btnText={"Continue for free"}
+          link={"/recipe"}
         />
         <SubscribeCard
           title={"Pro"}
           icon={
             <AiOutlineThunderbolt className="bg-primary text-light rounded-full p-1 text-3xl shadow-lg" />
           }
-          price={"$12"}
+          price={"₹999"}
           subtitle={"Best for professionals"}
           featureTitle={"Everything in Basic, plus:"}
-          features={["hello1", "hello2", "hello3"]}
+          features={["Add your own recipe", "Add your own blog", "hello3"]}
           btnText={"Get started"}
         />
       </div>

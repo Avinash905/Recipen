@@ -1,4 +1,6 @@
 const Recipe = require("../models/recipeModel");
+const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
 
 const getAllRecipes = async (req, res, next) => {
   try {
@@ -87,25 +89,142 @@ const updateRecipe = async (req, res, next) => {
   }
 };
 
-const deleteRecipe = async (req, res, next) => {
+const rateRecipe = async (req, res, next) => {
   try {
-    const recipe = await Recipe.findOneAndDelete({ _id: req.params.id });
-    res.status(204).json({ success: "Recipe deleted successfully" });
+    const { rating } = req.body;
+
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ error: "Recipe not found." });
+    }
+
+    // Check if the user has already rated this recipe
+    const existingRating = recipe.ratings.find((rate) =>
+      rate.user.equals(req.user)
+    );
+    if (existingRating) {
+      return res
+        .status(400)
+        .json({ error: "User has already rated this recipe" });
+    }
+
+    // Add the new rating
+    recipe.ratings.push({ user: req.user, rating: rating });
+    await recipe.save();
+
+    res.status(201).json({ message: "Rating added successfully." });
   } catch (error) {
     next(error);
   }
 };
 
-const addComment = async (req, res, next) => {};
+const deleteRecipe = async (req, res, next) => {
+  try {
+    const recipe = await Recipe.findOneAndDelete({ _id: req.params.id });
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+};
 
-const deleteComment = async (req, res, next) => {};
+const addComment = async (req, res, next) => {
+  try {
+    const { comment } = req.body;
+
+    // Validate userId and commentText
+    if (!comment) {
+      return res.status(400).json({ error: "Comment is required." });
+    }
+
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ error: "Recipe not found." });
+    }
+
+    // Add the new comment
+    recipe.comments.push({ user: req.user, comment });
+    await recipe.save();
+
+    res.status(201).json({ message: "Comment added successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteComment = async (req, res, next) => {
+  try {
+    const { recipeId, commentId } = req.params;
+
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ error: "Recipe not found." });
+    }
+
+    const commentIndex = recipe.comments.findIndex((comment) =>
+      comment._id.equals(commentId)
+    );
+    if (commentIndex === -1) {
+      return res.status(404).json({ error: "Comment not found." });
+    }
+
+    recipe.comments.splice(commentIndex, 1);
+    await recipe.save();
+
+    res.status(200).json({ message: "Comment deleted successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const toggleFavoriteRecipe = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const recipeIndex = user.favorites.indexOf(req.params.id);
+    if (recipeIndex === -1) {
+      // Recipe not present, add it to favorites
+      user.favorites.push(req.params.id);
+    } else {
+      // Recipe already present, remove it from favorites
+      user.favorites.splice(recipeIndex, 1);
+    }
+
+    await user.save();
+
+    const roles = Object.values(user.roles);
+
+    const accessToken = jwt.sign(
+      {
+        UserInfo: {
+          userId: user._id,
+          name: user.name,
+          email: user.email,
+          profilePicture: user.profilePicture,
+          roles: roles,
+          favorites: user.favorites,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1d" }
+    );
+    return res.status(201).json({ accessToken });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getAllRecipes,
   getRecipe,
   addRecipe,
   updateRecipe,
+  rateRecipe,
   deleteRecipe,
   addComment,
   deleteComment,
+  toggleFavoriteRecipe,
 };

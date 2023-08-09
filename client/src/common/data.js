@@ -233,9 +233,10 @@ export const recipes = [
   {
     id: 8,
     title: "Rasgulla",
-    description: "",
+    description:
+      "Rasgulla is a popular Indian sweet delicacy made from chhena (Indian cottage cheese) dough that is kneaded, rolled into balls, and then boiled in a sugar syrup until it becomes soft and spongy. Originating from the state of West Bengal, India, rasgullas are often served chilled and are characterized by their light, airy texture and mildly sweet taste. They are a common dessert at festive occasions and celebrations across India and other parts of South Asia.",
     image:
-      "https://images.pexels.com/photos/8788869/pexels-photo-8788869.jpeg?auto=compress&cs=tinysrgb&w=1080&dpr=1",
+      "https://github.com/sourabhsikarwar/Scene-Movie-Platform/assets/56786344/1cbb0cc0-f722-4df9-90a3-8b48b74c64e9",
     cookingTime: 40,
     calories: 237.45,
     ingredients: [
@@ -638,7 +639,7 @@ export const recipes = [
     id: 25,
     title: "Homemade Donuts",
     image:
-      "https://images.pexels.com/photos/4686960/pexels-photo-4686960.jpeg?auto=compress&cs=tinysrgb&w=1080&dpr=1",
+      "https://images.pexels.com/photos/1191639/pexels-photo-1191639.jpeg?auto=compress&cs=tinysrgb&w=1080&dpr=1",
     cookingTime: 60,
     calories: 450.2,
     ingredients: [
@@ -667,14 +668,5 @@ export const recipes = [
       "While the donuts are still warm, dust them with powdered sugar.",
       "Enjoy these delicious homemade donuts with your favorite coffee or tea!",
     ],
-  },
-];
-
-export const blogs = [
-  {
-    id: 1,
-    title: "",
-    image: "",
-    content: "",
   },
 ];

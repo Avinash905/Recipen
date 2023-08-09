@@ -1,10 +1,14 @@
 const User = require("../models/userModel");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find()
-      .sort({ updatedAt: -1 })
-      .select(["-password", "-refreshToken", "-favorites"]);
+    const users = await User.find().select([
+      "-password",
+      "-refreshToken",
+      "-favorites",
+    ]);
     res.status(200).json(users);
   } catch (error) {
     next(error);
@@ -13,26 +17,52 @@ const getAllUsers = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
+    const { name, email, password, image } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
       {
-        ...req.body,
+        name,
+        email,
+        profilePicture: image ? image : null,
+        password: hashedPassword,
       },
       { new: true }
     );
-    return res.status(201).json(user);
+
+    const roles = Object.values(user.roles);
+
+    const accessToken = jwt.sign(
+      {
+        UserInfo: {
+          userId: user._id,
+          name: user.name,
+          email: user.email,
+          profilePicture: user.profilePicture,
+          roles: roles,
+          favorites: user.favorites,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1d" }
+    );
+    return res.status(201).json({ accessToken });
   } catch (error) {
     next(error);
   }
 };
 
-const deleteUser = async (req, res, next) => {
+const disableUser = async (req, res, next) => {
   try {
-    const user = await User.findOneAndDelete({ _id: req.params.id });
-    res.status(204).json({ success: "User deleted successfully" });
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { isDisabled: true }
+    );
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { getAllUsers, updateUser, deleteUser };
+module.exports = { getAllUsers, updateUser, disableUser };

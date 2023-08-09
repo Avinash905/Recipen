@@ -14,13 +14,13 @@ import { useSelector } from "react-redux";
 import { selectCurrentToken } from "../../features/auth/authSlice";
 
 const Contact = () => {
+  const decoded = jwtDecode(useSelector(selectCurrentToken)).UserInfo;
   const [formDetails, setFormDetails] = useState({
     firstName: "",
     lastName: "",
-    email: "",
+    email: decoded?.email || "",
     message: "",
   });
-  const decoded = jwtDecode(useSelector(selectCurrentToken)).UserInfo;
   const [focused, setFocused] = useState(false);
   const handleFocus = () => {
     setFocused(true);

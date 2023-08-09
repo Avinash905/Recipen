@@ -1,7 +1,14 @@
 import React from "react";
+import Lottie from "lottie-react";
+import { loadingAnimation } from "../../assets/index";
 
 const Loading = () => {
-  return <div>index</div>;
+  return (
+    <Lottie
+      animationData={loadingAnimation}
+      loop={true}
+    />
+  );
 };
 
 export default Loading;

@@ -18,7 +18,7 @@ const schema = mongoose.Schema(
     ratings: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        rating: { type: Number, min: 1, max: 5 },
+        rating: { type: Number },
       },
     ],
     comments: [

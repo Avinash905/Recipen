@@ -2,17 +2,28 @@ const express = require("express");
 const {
   getAllUsers,
   updateUser,
-  deleteUser,
+  disableUser,
 } = require("../controllers/userController");
 const ROLES_LIST = require("../config/rolesList");
+const verifyJwt = require("../middleware/verifyJWT");
 const verifyRoles = require("../middleware/verifyRoles");
 
 const router = express.Router();
 
+router.route("/").get([verifyJwt, verifyRoles(ROLES_LIST.Admin)], getAllUsers);
+
 router
-  .route("/")
-  .get(verifyRoles(ROLES_LIST.Admin), getAllUsers)
-  .put(verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser), updateUser)
-  .delete(verifyRoles(ROLES_LIST.Admin), deleteUser);
+  .route("/:id")
+  .put(
+    [
+      verifyJwt,
+      verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.ProUser, ROLES_LIST.Admin),
+    ],
+    updateUser
+  );
+
+router
+  .route("/disable/:id")
+  .put([verifyJwt, verifyRoles(ROLES_LIST.Admin)], disableUser);
 
 module.exports = router;

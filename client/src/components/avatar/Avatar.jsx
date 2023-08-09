@@ -9,7 +9,14 @@ import {
   Tooltip,
   Box,
 } from "@mui/material";
-import { Article, Logout, RestaurantMenu } from "@mui/icons-material";
+import {
+  Article,
+  Description,
+  Fastfood,
+  Favorite,
+  Logout,
+  RestaurantMenu,
+} from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut, selectCurrentToken } from "../../features/auth/authSlice";
@@ -109,7 +116,10 @@ const Avatar = () => {
           <Box>
             <Divider />
             <MenuItem onClick={handleClose}>
-              <Link to="/recipe/add">
+              <Link
+                to="/recipe/add"
+                className="flex items-center"
+              >
                 <ListItemIcon>
                   <RestaurantMenu fontSize="small" />
                 </ListItemIcon>
@@ -117,15 +127,51 @@ const Avatar = () => {
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link to="/blog/add">
+              <Link
+                to="/blog/add"
+                className="flex items-center"
+              >
                 <ListItemIcon>
                   <Article fontSize="small" />
                 </ListItemIcon>
                 Add new blog
               </Link>
             </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to="/recipe/my-recipes"
+                className="flex items-center"
+              >
+                <ListItemIcon>
+                  <Fastfood fontSize="small" />
+                </ListItemIcon>
+                My recipes
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to="/blog/my-blogs"
+                className="flex items-center"
+              >
+                <ListItemIcon>
+                  <Description fontSize="small" />
+                </ListItemIcon>
+                My blogs
+              </Link>
+            </MenuItem>
           </Box>
         )}
+        <MenuItem onClick={handleClose}>
+          <Link
+            to="/recipe/saved"
+            className="flex items-center"
+          >
+            <ListItemIcon>
+              <Favorite fontSize="small" />
+            </ListItemIcon>
+            Saved recipes
+          </Link>
+        </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />

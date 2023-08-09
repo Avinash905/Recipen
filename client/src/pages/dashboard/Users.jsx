@@ -5,16 +5,24 @@ import { BiSolidUser } from "react-icons/bi";
 import { RiAdminFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { setUsers } from "../../features/user/userSlice";
-import { useGetUsersQuery } from "../../features/user/userApiSlice";
+import {
+  useGetUsersQuery,
+  useDisableUserMutation,
+} from "../../features/user/userApiSlice";
 import { Avatar as MuiAvatar } from "@mui/material";
 
-const index = () => {
+const Users = () => {
   const { data, isLoading } = useGetUsersQuery();
   const dispatch = useDispatch();
   const updatedData = data?.map((item, index) => ({
     ...item,
     id: index + 1,
   }));
+  const [disableUser] = useDisableUserMutation();
+
+  const handleDisable = (_id) => {
+    disableUser(_id);
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -37,7 +45,7 @@ const index = () => {
               alt={name}
               src={profilePicture}
               sx={{ width: 36, height: 36 }}
-              className="border-2 border-primary shadow-lg"
+              className="border-2 border-primary"
             />
             {name}
           </div>
@@ -85,7 +93,7 @@ const index = () => {
       headerAlign: "center",
       align: "center",
       minWidth: 250,
-      renderCell: ({ row: { isDisabled } }) => {
+      renderCell: ({ row: { isDisabled, _id } }) => {
         return (
           <div
             className={`rounded shadow-md w-[40%] py-1 text-center cursor-pointer ${
@@ -93,6 +101,7 @@ const index = () => {
             } ${
               isDisabled ? "hover:bg-[#fad57f]" : "hover:bg-primary"
             } text-light py-2`}
+            onClick={() => handleDisable(_id)}
           >
             {isDisabled ? "Disabled" : "Disable"}
           </div>
@@ -115,4 +124,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Users;

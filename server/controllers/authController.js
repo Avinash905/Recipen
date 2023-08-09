@@ -52,6 +52,7 @@ const login = async (req, res, next) => {
             email: foundUser.email,
             profilePicture: foundUser.profilePicture,
             roles: roles,
+            favorites: foundUser.favorites,
           },
         },
         process.env.ACCESS_TOKEN_SECRET,

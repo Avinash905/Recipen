@@ -3,9 +3,8 @@ import { Button } from "../../components";
 import { photo } from "../../assets";
 import { RxCross2 } from "react-icons/rx";
 import uploadImage from "../../common/uploadImage";
-import { Grid, LinearProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { useAddRecipeMutation } from "../../features/recipe/recipeApiSlice";
 
 const AddRecipe = () => {
@@ -28,7 +27,6 @@ const AddRecipe = () => {
     ingredient: "",
   });
   const [addRecipe, { isLoading }] = useAddRecipeMutation();
-  const navigate = useNavigate();
 
   const handleFocus = (e) => {
     setFocused({ ...focused, [e.target.id]: true });
@@ -89,7 +87,12 @@ const AddRecipe = () => {
         ingredients: [],
         instructions: [],
       });
-      navigate("/recipe");
+      setFocused({
+        title: "",
+        calories: "",
+        cookingTime: "",
+        ingredient: "",
+      });
     } catch (error) {
       toast.error(error.data);
       console.error(error);
@@ -107,7 +110,7 @@ const AddRecipe = () => {
         <div className="basis-1/2 flex flex-col gap-5">
           <div className="flex flex-col sm:flex-row justify-between">
             <label
-              htmlFor="name"
+              htmlFor="title"
               className="text-sm font-semibold mb-3 basis-1/2"
             >
               Recipe name
@@ -139,7 +142,7 @@ const AddRecipe = () => {
           <hr />
           <div className="flex flex-col sm:flex-row justify-between">
             <label
-              htmlFor="cookingTime"
+              htmlFor="description"
               className="text-sm font-semibold mb-3 basis-1/2"
             >
               Recipe description
@@ -270,7 +273,7 @@ const AddRecipe = () => {
           <div className="flex flex-col gap-4 justify-between">
             <div className="flex gap-1 justify-between items-center">
               <label
-                htmlFor="ingredient"
+                htmlFor="instruction"
                 className="text-sm font-semibold mb-3 basis-1/2"
               >
                 Add Steps
@@ -319,6 +322,7 @@ const AddRecipe = () => {
             content={"Add recipe"}
             type={"submit"}
             customCss={"rounded px-4 py-1 max-w-max"}
+            loading={isLoading}
           />
         </div>
         <hr className="block md:hidden mt-6" />
