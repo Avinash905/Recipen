@@ -10,7 +10,7 @@ const RequireAuth = ({ allowedRoles }) => {
   if (token) {
     if (
       jwtDecode(token)?.UserInfo?.roles?.find((role) =>
-        allowedRoles?.includes(role.toString())
+        allowedRoles?.includes(role?.toString())
       )
     ) {
       return <Outlet />;

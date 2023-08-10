@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AllCards } from "../../components";
+import { AllCards, ComponentLoading } from "../../components";
 import { useDispatch } from "react-redux";
 import { setRecipes } from "../../features/recipe/recipeSlice";
 import { useGetRecipesQuery } from "../../features/recipe/recipeApiSlice";
@@ -15,14 +15,20 @@ const Recipe = () => {
   }, [isLoading]);
 
   return (
-    <AllCards
-      mainTitle={"Discover Flavorful Creations"}
-      tagline={
-        "Delight in a diverse collection of mouthwatering recipes, curated and shared by passionate food enthusiasts."
-      }
-      type={"recipe"}
-      data={data}
-    />
+    <>
+      {isLoading ? (
+        <ComponentLoading />
+      ) : (
+        <AllCards
+          mainTitle={"Discover Flavorful Creations"}
+          tagline={
+            "Delight in a diverse collection of mouthwatering recipes, curated and shared by passionate food enthusiasts."
+          }
+          type={"recipe"}
+          data={data}
+        />
+      )}
+    </>
   );
 };
 

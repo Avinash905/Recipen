@@ -28,7 +28,7 @@ const SubscribeCard = ({
   };
 
   return (
-    <div className="flex flex-col gap-1 shadow bg-white rounded-lg p-8 hover:shadow-lg w-full">
+    <div className="flex flex-col items-center md:items-start gap-1 shadow bg-white rounded-lg p-8 hover:shadow-lg w-full">
       <div className="flex gap-3 items-center">
         {icon}
         <h3 className="font-bold text-xl">{title}</h3>
@@ -36,7 +36,10 @@ const SubscribeCard = ({
       <p className="text-gray-500 text-sm">{subtitle}</p>
       <h4 className="font-bold text-3xl my-4">{price}</h4>
       {link ? (
-        <Link to={link}>
+        <Link
+          to={link}
+          className="w-full"
+        >
           <Button
             content={btnText}
             customCss={"rounded text-sm w-full"}

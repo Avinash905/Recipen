@@ -4,7 +4,8 @@ import profileBg from "./profile_details.svg";
 import errorAnimation from "./error.json";
 import paymentFailed from "./payment_failed.json";
 import paymentSuccessful from "./payment_successful.json";
-import loadingAnimation from "./loading.json";
+import pageLoading from "./loading.json";
+import componentLoading from "./componentLoading.json";
 import photo from "./photo.svg";
 
 export {
@@ -15,5 +16,6 @@ export {
   paymentSuccessful,
   paymentFailed,
   photo,
-  loadingAnimation,
+  pageLoading,
+  componentLoading,
 };

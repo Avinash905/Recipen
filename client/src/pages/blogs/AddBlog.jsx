@@ -44,11 +44,11 @@ const AddBlog = () => {
         success: "Blog added successfully",
         error: "Unable to add blog",
       });
-      // setFormDetails({
-      //   title: "",
-      //   image: "",
-      //   description: "",
-      // });
+      setFormDetails({
+        title: "",
+        image: "",
+        description: "",
+      });
       setFocused({
         title: "",
       });

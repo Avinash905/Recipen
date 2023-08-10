@@ -43,7 +43,7 @@ const Avatar = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     dispatch(logOut());
-    navigate("/");
+    navigate("/auth/signin");
   };
 
   return (
@@ -69,7 +69,6 @@ const Avatar = () => {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -99,7 +98,7 @@ const Avatar = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
           <Link
             to={"/profile"}
             className="flex items-center"
@@ -112,10 +111,12 @@ const Avatar = () => {
             Profile
           </Link>
         </MenuItem>
-        {decoded?.roles?.includes(parseInt(ROLES?.ProUser)) && (
+        {decoded?.roles?.find((role) =>
+          [ROLES.Admin, ROLES.ProUser]?.includes(role?.toString())
+        ) && (
           <Box>
             <Divider />
-            <MenuItem onClick={handleClose}>
+            <MenuItem>
               <Link
                 to="/recipe/add"
                 className="flex items-center"
@@ -126,7 +127,7 @@ const Avatar = () => {
                 Add new recipe
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem>
               <Link
                 to="/blog/add"
                 className="flex items-center"
@@ -137,7 +138,7 @@ const Avatar = () => {
                 Add new blog
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem>
               <Link
                 to="/recipe/my-recipes"
                 className="flex items-center"
@@ -148,7 +149,7 @@ const Avatar = () => {
                 My recipes
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem>
               <Link
                 to="/blog/my-blogs"
                 className="flex items-center"
@@ -161,7 +162,7 @@ const Avatar = () => {
             </MenuItem>
           </Box>
         )}
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
           <Link
             to="/recipe/saved"
             className="flex items-center"

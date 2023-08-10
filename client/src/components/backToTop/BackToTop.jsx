@@ -22,7 +22,7 @@ const BackToTop = () => {
   }, []);
 
   return (
-    <div className={`fixed bottom-8 right-6 ${isVisible ? "block" : "hidden"}`}>
+    <div className={`fixed bottom-8 left-6 ${isVisible ? "block" : "hidden"}`}>
       <MdKeyboardArrowUp
         onClick={scrollToTop}
         className="animate-bounce text-5xl bg-primary rounded-full shadow shadow-primaryLight cursor-pointer text-light p-3"

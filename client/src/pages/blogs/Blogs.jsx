@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AllCards } from "../../components";
+import { AllCards, ComponentLoading } from "../../components";
 import { useDispatch } from "react-redux";
 import { setBlogs } from "../../features/blog/blogSlice";
 import { useGetBlogsQuery } from "../../features/blog/blogApiSlice";
@@ -15,12 +15,20 @@ const Blogs = () => {
   }, [isLoading]);
 
   return (
-    <AllCards
-      mainTitle={"Explore our Culinary Insights"}
-      tagline={"Embark on a flavorful journey with our delightful blog posts!"}
-      type={"blog"}
-      data={data}
-    />
+    <>
+      {isLoading ? (
+        <ComponentLoading />
+      ) : (
+        <AllCards
+          mainTitle={"Explore our Culinary Insights"}
+          tagline={
+            "Embark on a flavorful journey with our delightful blog posts!"
+          }
+          type={"blog"}
+          data={data}
+        />
+      )}
+    </>
   );
 };
 

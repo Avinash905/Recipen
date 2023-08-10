@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Table } from "../../components";
+import { ComponentLoading, Table } from "../../components";
 import { setBlogs } from "../../features/blog/blogSlice";
 import { useDispatch } from "react-redux";
 import {
@@ -92,7 +92,9 @@ const DashboardBlogs = () => {
   return (
     <section className="mx-auto px-6 flex justify-center items-center h-[100vh]">
       <div className="w-full h-[90%] flex justify-center items-center">
-        {!isLoading && (
+        {isLoading ? (
+          <ComponentLoading />
+        ) : (
           <Table
             rows={updatedData}
             cols={cols}

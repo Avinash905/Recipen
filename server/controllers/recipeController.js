@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const getAllRecipes = async (req, res, next) => {
   try {
     const recipes = await Recipe.find()
-      .sort({ updatedAt: -1 })
+      .sort({ createdAt: -1 })
       .populate("author", "name");
     res.status(200).send(recipes);
   } catch (error) {

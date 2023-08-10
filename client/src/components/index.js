@@ -4,7 +4,8 @@ import Footer from "./footer/Footer";
 import Input from "./input/Input";
 import Button from "./button/Button";
 import Logo from "./logo/Logo";
-import Loading from "./loading/Loading";
+import PageLoading from "./loading/PageLoading";
+import ComponentLoading from "./loading/ComponentLoading";
 import Hero from "./hero/Hero";
 import BackToTop from "./backToTop/BackToTop";
 import SingleCard from "./cards/SingleCard";
@@ -27,7 +28,8 @@ export {
   Input,
   Button,
   Logo,
-  Loading,
+  PageLoading,
+  ComponentLoading,
   Hero,
   BackToTop,
   SingleCard,

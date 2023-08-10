@@ -15,7 +15,6 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
     "@mui/x-data-grid": "^6.11.0",
-    "@react-oauth/google": "^0.11.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "framer-motion": "^10.15.0",

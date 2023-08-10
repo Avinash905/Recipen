@@ -14,7 +14,7 @@ const Button = ({
       <motion.button
         type={type}
         disabled={loading}
-        className={`bg-primaryLight hover:bg-primary text-light py-2 px-5 shadow-lg font-semibold flex items-center justify-center gap-2 text-center ${customCss}`}
+        className={`bg-primaryLight hover:bg-primary text-light py-2 px-5 shadow-lg font-semibold flex items-center justify-center gap-2 max-h-max text-center ${customCss}`}
         onClick={handleClick}
         whileTap={{ scale: 0.95 }}
       >

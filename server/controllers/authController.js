@@ -98,13 +98,11 @@ const refreshToken = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       async (err, decoded) => {
         if (err) return res.sendStatus(403); //Forbidden
-        console.log("attempted refresh token reuse!");
         const hackedUser = await User.findOne({
           userId: decoded.userId,
         }).exec();
         hackedUser.refreshToken = [];
         const result = await hackedUser.save();
-        console.log(result);
       }
     );
     return res.sendStatus(403);

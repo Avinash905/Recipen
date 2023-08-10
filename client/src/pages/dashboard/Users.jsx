@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Table } from "../../components";
+import { ComponentLoading, Table } from "../../components";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { BiSolidUser } from "react-icons/bi";
 import { RiAdminFill } from "react-icons/ri";
@@ -113,7 +113,9 @@ const Users = () => {
   return (
     <section className="mx-auto px-6 flex justify-center items-center h-[100vh]">
       <div className="w-full h-[90%] flex justify-center items-center">
-        {!isLoading && (
+        {isLoading ? (
+          <ComponentLoading />
+        ) : (
           <Table
             rows={updatedData}
             cols={cols}

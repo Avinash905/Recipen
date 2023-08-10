@@ -3,3 +3,4 @@
 /server/node_modules
 /server/.env
 /client/.env
+/client/src/common/data.js

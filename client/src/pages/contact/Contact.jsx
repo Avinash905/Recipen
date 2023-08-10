@@ -14,7 +14,9 @@ import { useSelector } from "react-redux";
 import { selectCurrentToken } from "../../features/auth/authSlice";
 
 const Contact = () => {
-  const decoded = jwtDecode(useSelector(selectCurrentToken)).UserInfo;
+  const decoded = useSelector(selectCurrentToken)
+    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
+    : null;
   const [formDetails, setFormDetails] = useState({
     firstName: "",
     lastName: "",

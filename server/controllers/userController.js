@@ -4,11 +4,9 @@ const jwt = require("jsonwebtoken");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find().select([
-      "-password",
-      "-refreshToken",
-      "-favorites",
-    ]);
+    const users = await User.find()
+      .find({ _id: { $ne: req.user } })
+      .select(["-password", "-refreshToken", "-favorites"]);
     res.status(200).json(users);
   } catch (error) {
     next(error);

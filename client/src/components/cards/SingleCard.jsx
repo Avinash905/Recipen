@@ -1,7 +1,7 @@
 import React from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Rating } from "@mui/material";
 import dateFormat from "../../common/dateFormat";
 import { toast } from "react-toastify";
@@ -15,11 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import ShareButton from "../shareButton/ShareButton";
 
 const SingleCard = ({ singleData, type }) => {
-  const dispatch = useDispatch();
-  const [toggleFavorite] = useToggleFavoriteMutation();
   const user = useSelector(selectCurrentToken)
     ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
     : null;
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const [toggleFavorite] = useToggleFavoriteMutation();
 
   const formattedDate = dateFormat(singleData?.createdAt);
   const sumOfRatings = singleData?.ratings.reduce(
@@ -31,7 +33,10 @@ const SingleCard = ({ singleData, type }) => {
 
   const handleToggleFavorite = async () => {
     try {
-      // setRating(newValue);
+      if (!user) {
+        toast.error("You must sign in first");
+        return navigate("/auth/signin");
+      }
       const userData = await toast.promise(
         toggleFavorite({ recipeId: singleData._id }).unwrap(),
         {
@@ -97,7 +102,7 @@ const SingleCard = ({ singleData, type }) => {
           {/* Card rating */}
           {type === "recipe" && (
             <Rating
-              rating={averageRating}
+              value={averageRating}
               readOnly
               size={"medium"}
             />

@@ -1,31 +1,32 @@
-import Home from "./home/Home";
-import Contact from "./contact/Contact";
-import Profile from "./profile/Profile";
+import { lazy } from "react";
 
-import Error from "./message/Error";
-import CheckoutSuccess from "./message/CheckoutSuccess";
-import CheckoutFailure from "./message/CheckoutFailure";
+const Home = lazy(() => import("./home/Home"));
+const Contact = lazy(() => import("./contact/Contact"));
+const Profile = lazy(() => import("./profile/Profile"));
 
-import Recipe from "./recipe/Recipe";
-import SingleRecipe from "./recipe/SingleRecipe";
-import SavedRecipes from "./recipe/SavedRecipes";
-import AddRecipe from "./recipe/AddRecipe";
-import MyRecipes from "./recipe/MyRecipes";
-import EditRecipe from "./recipe/EditRecipe";
+const Error = lazy(() => import("./message/Error"));
+const CheckoutSuccess = lazy(() => import("./message/CheckoutSuccess"));
+const CheckoutFailure = lazy(() => import("./message/CheckoutFailure"));
 
-import Blogs from "./blogs/Blogs";
-import AddBlog from "./blogs/AddBlog";
-import SingleBlog from "./blogs/SingleBlog";
-import MyBlogs from "./blogs/MyBlogs";
-import EditBlog from "./blogs/EditBlog";
+const Recipe = lazy(() => import("./recipe/Recipe"));
+const SingleRecipe = lazy(() => import("./recipe/SingleRecipe"));
+const SavedRecipes = lazy(() => import("./recipe/SavedRecipes"));
+const AddRecipe = lazy(() => import("./recipe/AddRecipe"));
+const MyRecipes = lazy(() => import("./recipe/MyRecipes"));
+const EditRecipe = lazy(() => import("./recipe/EditRecipe"));
 
-import Dashboard from "./dashboard/Dashboard";
-import Users from "./dashboard/Users";
-import DashboardRecipes from "./dashboard/DashboardRecipes";
-import DashboardBlogs from "./dashboard/DashboardBlogs";
+const Blogs = lazy(() => import("./blogs/Blogs"));
+const AddBlog = lazy(() => import("./blogs/AddBlog"));
+const SingleBlog = lazy(() => import("./blogs/SingleBlog"));
+const MyBlogs = lazy(() => import("./blogs/MyBlogs"));
+const EditBlog = lazy(() => import("./blogs/EditBlog"));
 
-import SignIn from "./auth/SignIn";
-import SignUp from "./auth/SignUp";
+const Users = lazy(() => import("./dashboard/Users"));
+const DashboardRecipes = lazy(() => import("./dashboard/DashboardRecipes"));
+const DashboardBlogs = lazy(() => import("./dashboard/DashboardBlogs"));
+
+const SignIn = lazy(() => import("./auth/SignIn"));
+const SignUp = lazy(() => import("./auth/SignUp"));
 
 export {
   Home,
@@ -42,7 +43,6 @@ export {
   SingleBlog,
   MyBlogs,
   EditBlog,
-  Dashboard,
   Users,
   DashboardRecipes,
   DashboardBlogs,

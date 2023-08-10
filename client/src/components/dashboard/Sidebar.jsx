@@ -7,8 +7,16 @@ import { BsFileEarmarkText } from "react-icons/bs";
 import { HiOutlineUsers, HiOutlineLogout } from "react-icons/hi";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { Logo } from "..";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "../../features/auth/authSlice";
+import jwtDecode from "jwt-decode";
+import { Avatar as MuiAvatar } from "@mui/material";
 
 const index = ({ isCollapsed, setIsCollapsed }) => {
+  const user = useSelector(selectCurrentToken)
+    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
+    : null;
+
   return (
     <motion.aside className="basis-0 h-screen p-6 flex flex-col justify-between bg-[#f4f4f4] border-r-2 border-gray-200">
       <div className="flex flex-col gap-6">
@@ -28,16 +36,17 @@ const index = ({ isCollapsed, setIsCollapsed }) => {
         {/* Profile details */}
         <div className="flex gap-2 items-center">
           <div className="w-12 h-12">
-            <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=720&dpr=1"
-              alt=""
-              className="rounded-full border-primary border-2 w-full h-full object-cover"
+            <MuiAvatar
+              alt={user?.name}
+              src={user?.profilePicture}
+              sx={{ width: 48, height: 48 }}
+              className="rounded-full border-primary border-2 -mr-2"
             />
           </div>
           {!isCollapsed && (
             <div className="flex flex-col gap-1">
-              <h2 className="font-bold">John Doe</h2>
-              <p className="text-sm text-gray-500">example@abc.com</p>
+              <h2 className="font-bold">{user?.name}</h2>
+              <p className="text-sm text-gray-500">{user?.email}</p>
             </div>
           )}
         </div>

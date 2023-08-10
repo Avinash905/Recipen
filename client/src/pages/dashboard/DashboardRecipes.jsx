@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Table } from "../../components";
+import { ComponentLoading, Table } from "../../components";
 import { setRecipes } from "../../features/recipe/recipeSlice";
 import { useDispatch } from "react-redux";
 import {
@@ -72,12 +72,11 @@ const DashboardRecipes = () => {
         );
         const averageRating =
           sumOfRatings === 0 ? 0 : sumOfRatings / ratings.length;
-
         return (
           <Rating
-            rating={averageRating}
+            value={averageRating}
             readOnly={true}
-            size={25}
+            size={"medium"}
           />
         );
       },
@@ -104,7 +103,9 @@ const DashboardRecipes = () => {
   return (
     <section className="mx-auto px-6 flex justify-center items-center h-[100vh]">
       <div className="w-full h-[90%] flex justify-center items-center">
-        {!isLoading && (
+        {isLoading ? (
+          <ComponentLoading />
+        ) : (
           <Table
             rows={updatedData}
             cols={cols}

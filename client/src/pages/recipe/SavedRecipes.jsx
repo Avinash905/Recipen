@@ -1,5 +1,5 @@
 import React from "react";
-import { AllCards } from "../../components";
+import { AllCards, ComponentLoading } from "../../components";
 import jwtDecode from "jwt-decode";
 import { selectCurrentToken } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
@@ -17,14 +17,20 @@ const index = () => {
   );
 
   return (
-    <AllCards
-      mainTitle={"Your Flavorful Collection"}
-      tagline={
-        "Welcome to your personal culinary treasury - a haven for your favorite recipes!"
-      }
-      type={"recipe"}
-      data={updatedData}
-    />
+    <>
+      {isLoading ? (
+        <ComponentLoading />
+      ) : (
+        <AllCards
+          mainTitle={"Your Flavorful Collection"}
+          tagline={
+            "Welcome to your personal culinary treasury - a haven for your favorite recipes!"
+          }
+          type={"recipe"}
+          data={updatedData}
+        />
+      )}
+    </>
   );
 };
 
