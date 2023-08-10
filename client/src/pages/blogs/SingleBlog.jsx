@@ -114,7 +114,7 @@ const SingleBlog = () => {
               <h2 className="font-bold text-2xl md:text-4xl text-center mb-6">
                 {data?.title}
               </h2>
-              {data?.author?._id === user.userId && (
+              {data?.author?._id === user?.userId && (
                 <>
                   <IconButton
                     aria-label="more"
