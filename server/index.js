@@ -20,10 +20,6 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json("Hello");
-});
-
 // route middleware
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));

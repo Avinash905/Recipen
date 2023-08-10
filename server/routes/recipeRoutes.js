@@ -11,7 +11,7 @@ const {
   toggleFavoriteRecipe,
 } = require("../controllers/recipeController");
 const ROLES_LIST = require("../config/rolesList");
-const verifyJwt = require("../middleware/verifyJWT");
+const verifyJwt = require("../middleware/verifyJwt");
 const verifyRoles = require("../middleware/verifyRoles");
 
 const router = express.Router();
