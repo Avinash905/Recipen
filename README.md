@@ -7,8 +7,6 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
 
 🚀[Click here](https://recipen.vercel.app/) to check out the app.
 
-<br/>
-
 ### 📃Features :
 
 <ul>
