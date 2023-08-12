@@ -19,7 +19,7 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
     <li><strong>Admin Dashboard:</strong> Admins have access to a dashboard for managing users, recipes, and blogs</li>
     <li><strong>User Profile:</strong> Each user has a personalized profile where they can manage their information.</li>
     <li><strong>Contact Us Page:</strong> A dedicated page for users to reach out with questions, concerns, or feedback, fostering communication.</li>
-    <li><strong>AI Chatbot:</strong> An AI-powered chatbot provides instant assistance and answers user queries about the platform.</li>
+    <li><strong>Chatbot:</strong> A chatbot that provides one to one assistance with the maintainers of the project.</li>
     <li><strong>Save and Unsave Favorite Recipes:</strong> Users can curate their own collection of favorite recipes for easy access and cooking inspiration.</li>
     <li><strong>Rate and Comment on Recipes:</strong> Registered users can provide ratings and comments on recipes, enhancing the community interaction.</li>
     <li><strong>Comment on Blogs:</strong> Engage in discussions by leaving comments on the food blogs, sharing thoughts and ideas.</li>
@@ -57,6 +57,7 @@ ACCESS_TOKEN_SECRET=YOUR_JWT_SECRET_FOR_ACCESS_TOKEN
 REFRESH_TOKEN_SECRET=YOUR_JWT_SECRET_FOR_REFRESH_TOKEN
 CLIENT_BASE_URL=FRONTEND_URL
 STRIPE_KEY=YOUR_OWN_STRIPE_KEY
+STRIPE_PRICE_ID=PRICE_ID_GENERATED_FROM_STRIPE
 ```
 
 <li>To run the frontend, open a new terminal and run 'cd client/' to go to client directory and execute: npm run dev</li>

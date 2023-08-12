@@ -15,7 +15,7 @@ const subscribe = async (req, res, next) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price: "price_1NdC0pSCZ4fNMWtmIvEmHXph",
+          price: process.env.STRIPE_PRICE_ID,
           quantity: 1,
         },
       ],
