@@ -31,7 +31,7 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
 ### To run the project on your local machine
 
 <ol>
-<li>Download the project from the git repository</li>
+<li>Clone and fork this repository</li>
 <li>Add .env file in client directory for the frontend which contains</li>
 
 ```
