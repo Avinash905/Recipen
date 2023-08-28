@@ -12,7 +12,7 @@ const RequireAuth = ({ allowedRoles }) => {
     if (!user) {
       const timeoutId = setTimeout(() => {
         setRedirecting(true);
-      }, 2000); // Adjust the timeout value as needed
+      }, 4000); // Adjust the timeout value as needed
 
       return () => {
         clearTimeout(timeoutId);
