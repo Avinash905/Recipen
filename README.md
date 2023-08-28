@@ -63,6 +63,8 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
 
 <br>
 
+---
+
 ### ✨Features :
 
 <ul>
