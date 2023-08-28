@@ -6,24 +6,22 @@ import { PageLoading } from "../../components";
 const RequireAuth = ({ allowedRoles }) => {
   const user = useAuth();
   const location = useLocation();
-  const [redirecting, setRedirecting] = useState(false);
+  const [redirect, setRedirect] = useState(null);
 
   useEffect(() => {
     if (!user) {
-      const timeoutId = setTimeout(() => {
-        setRedirecting(true);
-      }, 4000); // Adjust the timeout value as needed
+      const timer = setTimeout(() => {
+        setRedirect("/auth/signin");
+      }, 4000);
 
-      return () => {
-        clearTimeout(timeoutId);
-      };
+      return () => clearTimeout(timer);
     }
   }, [user]);
 
-  if (redirecting) {
+  if (redirect) {
     return (
       <Navigate
-        to={"/auth/signin"}
+        to={redirect}
         state={{ from: location }}
         replace
       />
