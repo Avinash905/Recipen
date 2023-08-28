@@ -25,12 +25,17 @@ import {
   CheckoutFailure,
 } from "./pages";
 import { ScrollToTop, PageLoading } from "./components";
-import { RootLayout, DashboardLayout, RequireAuth } from "./layouts";
+import { RootLayout, DashboardLayout } from "./layouts";
+import RequireAuth from "./features/auth/RequireAuth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ROLES from "./common/roles";
+import PersistLogin from "./features/auth/PersistLogin";
+import useTitle from "./hooks/useTitle";
 
 function App() {
+  useTitle("Recipen - Home");
+
   return (
     <Router>
       <ScrollToTop />
@@ -42,26 +47,6 @@ function App() {
       />
       <Suspense fallback={<PageLoading />}>
         <Routes>
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route
-              path="/dashboard"
-              element={<DashboardLayout />}
-            >
-              <Route
-                path="users"
-                element={<Users />}
-              />
-              <Route
-                path="recipes"
-                element={<DashboardRecipes />}
-              />
-              <Route
-                path="blogs"
-                element={<DashboardBlogs />}
-              />
-            </Route>
-          </Route>
-
           <Route path="/auth">
             <Route
               path="signin"
@@ -73,103 +58,126 @@ function App() {
             />
           </Route>
 
-          <Route
-            path="/"
-            element={<RootLayout />}
-          >
-            <Route
-              index
-              element={<Home />}
-            />
-            <Route path="recipe">
+          <Route element={<PersistLogin />}>
+            {/* Dashboard */}
+            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route
-                index
-                element={<Recipe />}
-              />
-              <Route
-                path=":id"
-                element={<SingleRecipe />}
-              />
-              <Route
-                path="saved"
-                element={<SavedRecipes />}
-              />
+                path="/dashboard"
+                element={<DashboardLayout />}
+              >
+                <Route
+                  path="users"
+                  element={<Users />}
+                />
+                <Route
+                  path="recipes"
+                  element={<DashboardRecipes />}
+                />
+                <Route
+                  path="blogs"
+                  element={<DashboardBlogs />}
+                />
+              </Route>
+            </Route>
 
-              <Route
-                element={
-                  <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
-                }
-              >
-                <Route
-                  path="add"
-                  element={<AddRecipe />}
-                />
-                <Route
-                  path="my-recipes"
-                  element={<MyRecipes />}
-                />
-                <Route
-                  path="edit/:id"
-                  element={<EditRecipe />}
-                />
-              </Route>
-            </Route>
             <Route
-              path="contact"
-              element={<Contact />}
-            />
-            <Route path="blog">
-              <Route
-                index
-                element={<Blogs />}
-              />
-              <Route
-                path=":id"
-                element={<SingleBlog />}
-              />
-              <Route
-                element={
-                  <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
-                }
-              >
-                <Route
-                  path="add"
-                  element={<AddBlog />}
-                />
-                <Route
-                  path="my-blogs"
-                  element={<MyBlogs />}
-                />
-                <Route
-                  path="edit/:id"
-                  element={<EditBlog />}
-                />
-              </Route>
-            </Route>
-            <Route
-              element={
-                <RequireAuth
-                  allowedRoles={[ROLES.BasicUser, ROLES.ProUser, ROLES.Admin]}
-                />
-              }
+              path="/"
+              element={<RootLayout />}
             >
               <Route
-                path="profile"
-                element={<Profile />}
+                index
+                element={<Home />}
               />
+              <Route path="recipe">
+                <Route
+                  index
+                  element={<Recipe />}
+                />
+                <Route
+                  path=":id"
+                  element={<SingleRecipe />}
+                />
+                <Route
+                  path="saved"
+                  element={<SavedRecipes />}
+                />
+
+                <Route
+                  element={
+                    <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
+                  }
+                >
+                  <Route
+                    path="add"
+                    element={<AddRecipe />}
+                  />
+                  <Route
+                    path="my-recipes"
+                    element={<MyRecipes />}
+                  />
+                  <Route
+                    path="edit/:id"
+                    element={<EditRecipe />}
+                  />
+                </Route>
+              </Route>
               <Route
-                path="payment-success"
-                element={<CheckoutSuccess />}
+                path="contact"
+                element={<Contact />}
               />
+              <Route path="blog">
+                <Route
+                  index
+                  element={<Blogs />}
+                />
+                <Route
+                  path=":id"
+                  element={<SingleBlog />}
+                />
+                <Route
+                  element={
+                    <RequireAuth allowedRoles={[ROLES.ProUser, ROLES.Admin]} />
+                  }
+                >
+                  <Route
+                    path="add"
+                    element={<AddBlog />}
+                  />
+                  <Route
+                    path="my-blogs"
+                    element={<MyBlogs />}
+                  />
+                  <Route
+                    path="edit/:id"
+                    element={<EditBlog />}
+                  />
+                </Route>
+              </Route>
               <Route
-                path="payment-failed"
-                element={<CheckoutFailure />}
+                element={
+                  <RequireAuth
+                    allowedRoles={[ROLES.BasicUser, ROLES.ProUser, ROLES.Admin]}
+                  />
+                }
+              >
+                <Route
+                  path="profile"
+                  element={<Profile />}
+                />
+                <Route
+                  path="payment-success"
+                  element={<CheckoutSuccess />}
+                />
+                <Route
+                  path="payment-failed"
+                  element={<CheckoutFailure />}
+                />
+              </Route>
+              <Route
+                path="/*"
+                element={<Error />}
               />
             </Route>
-            <Route
-              path="/*"
-              element={<Error />}
-            />
           </Route>
         </Routes>
       </Suspense>

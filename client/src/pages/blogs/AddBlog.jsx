@@ -6,8 +6,11 @@ import { LinearProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import { useAddBlogMutation } from "../../features/blog/blogApiSlice";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import useTitle from "../../hooks/useTitle";
 
 const AddBlog = () => {
+  useTitle("Recipen - Add Blog");
+
   const [formDetails, setFormDetails] = useState({
     title: "",
     image: "",

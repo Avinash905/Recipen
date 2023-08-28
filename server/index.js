@@ -1,11 +1,12 @@
 require("dotenv").config();
-require("./db/conn");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
 const credentials = require("./middleware/credentials");
 const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
+const connectDB = require("./db/conn");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,6 +30,11 @@ app.use("/api/stripe", require("./routes/subscriptionRoutes"));
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server running on ${port}`);
-});
+connectDB()
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+  })
+  .catch((err) => {
+    console.error(`Error connecting to MongoDB ${err}`);
+  });

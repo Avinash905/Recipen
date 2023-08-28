@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { Logo, Button, Menu, Avatar } from "..";
 import { Link, NavLink } from "react-router-dom";
 import { FiLogIn, FiMenu } from "react-icons/fi";
-import jwtDecode from "jwt-decode";
-import { selectCurrentToken } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import ROLES from "../../common/roles";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const token = useSelector(selectCurrentToken);
+  const user = useAuth();
 
   return (
     <header className="shadow-sm sticky top-0 backdrop-blur-sm bg-[#fffefc80] z-20">
@@ -27,19 +24,16 @@ const Header = () => {
                 Home
               </NavLink>
             </li>
-            {token &&
-              jwtDecode(token)?.UserInfo?.roles?.includes(
-                parseInt(ROLES?.Admin)
-              ) && (
-                <li>
-                  <NavLink
-                    to={"/dashboard/users"}
-                    className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
-                  >
-                    Dashboard
-                  </NavLink>
-                </li>
-              )}
+            {user && user?.isAdmin && (
+              <li>
+                <NavLink
+                  to={"/dashboard/users"}
+                  className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
+                >
+                  Dashboard
+                </NavLink>
+              </li>
+            )}
             <li>
               <NavLink
                 to={"/recipe"}
@@ -67,8 +61,8 @@ const Header = () => {
           </ul>
         </nav>
         {/* Sign in button */}
-        {token ? (
-          <Avatar profilePicture={token} />
+        {user ? (
+          <Avatar />
         ) : (
           <Link
             to={"/auth/signin"}
@@ -91,6 +85,7 @@ const Header = () => {
         <Menu
           setIsCollapsed={setIsCollapsed}
           isCollapsed={isCollapsed}
+          user={user}
         />
       </div>
     </header>

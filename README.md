@@ -1,16 +1,72 @@
-# Recipen 🍴
+<h1 align="center">Recipen</h1>
 
-<h3>Description :</h3> 
+<div id="top">
+
+<div align="center">
+  <br>
+  <img src="https://img.shields.io/github/repo-size/Avinash905/Recipen?style=for-the-badge" />
+  <img src="https://img.shields.io/github/issues/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/issues-closed-raw/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/last-commit/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/issues-pr/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/issues-pr-closed-raw/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/forks/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/stars/Avinash905/Recipen?style=for-the-badge" />
+    <img src="https://img.shields.io/github/contributors-anon/Avinash905/Recipen?style=for-the-badge" />
+  </div>
+  <br>
+
+
+<h3>Description :</h3>
 Explore a world of flavors with Recipen! Indulge in a community-driven platform where food enthusiasts share their cherished recipes and captivating food blogs. Join as a pro user to contribute your own culinary creations. Unlock a realm of taste, culture, and creativity.
 
-<br/>
 
-🚀[Click here](https://recipen.vercel.app/) to check out the app.
+<img src="./client/src/assets/mockup-nobg.png" alt="mockup" />
 
-### 📃Features :
+
+### Link:
+
+<h4> Live Site: https://recipen.vercel.app/ </h4>
+
+
+### Tools and technologies used :
+
+<div align=center>
+
+![](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![](https://img.shields.io/badge/javascript-8A2BE2?style=for-the-badge&logo=javascript&labelcolor=white)
+![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=white&color=148dff)
+![](https://img.shields.io/badge/Node.js-8A2BE2?style=for-the-badge&logo=Node.js&color=b3ffb0)
+![](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&color=008712)
+![](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
+![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white)
+![](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white)
+
+</div>
+
+
+### Connect with me:
+
+<div align=center>
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2.svg?style=for-the-badge&logo=LinkedIn&logoColor=white)](https://www.linkedin.com/in/dunna-avinash)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Avinash905)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](surajpratap20002003@gmail.com)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/avinashdunna)
+
+</div>
+
+
+### ✨Features :
 
 <ul>
     <li><strong>Authentication:</strong> Users can securely create accounts and log in to access personalized features and content.</li>
+    <li><strong>Access & Refresh Token:</strong> Implemented access and refresh token mechanism for enhanced security during user authentication.</li>
+    <li><strong>Authentication State Persistence:</strong> User authentication state is now persisted across sessions, providing a seamless user experience.</li>
+    <li><strong>Storing Tokens in Cookies:</strong> Tokens are stored in secure cookies for better protection against cross-site scripting (XSS) attacks.</li>
     <li><strong>Recipes:</strong> Explore a rich collection of authentic recipes contributed by the community, covering a wide range of cuisines and tastes.</li>
     <li><strong>Food Blogs:</strong> Engage with insightful and creative food blogs written by enthusiasts, offering valuable insights and cooking inspiration.</li>
     <li><strong>Stripe Payment Integration:</strong> Seamlessly integrated Stripe for secure payment processing, enhancing user experience during transactions.</li>
@@ -26,52 +82,50 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
     <li><strong>Share Recipe on Social Media:</strong> Users can effortlessly share their favorite recipes on various social media platforms.</li>
 </ul>
 
+
 <hr/>
 
-### To run the project on your local machine
+<p align="right"><a href="#top">Back to Top</a></p>
+
+
+### Steps to run the project on your local machine
 
 <ol>
-<li>Clone and fork this repository</li>
-<li>Add .env file in client directory for the frontend which contains</li>
+<li>Fork this repository</li>
+<li>Open terminal or command prompt on your local machine. Run the following command to clone the repository:</li>
 
 ```
-VITE_ADMIN_CODE=100
-VITE_BASIC_CODE=101
-VITE_PRO_CODE=102
-VITE_BASE_URL=http://localhost:5173
-VITE_SERVER_BASE_URL=http://localhost:5000/api
-VITE_CLOUDINARY_CLOUD_NAME=YOUR_OWN_CLOUDINARY_CLOUD_NAME
-VITE_CLOUDINARY_BASE_URL=https://api.cloudinary.com/v1_1/{CLOUD_NAME}/image/upload
-VITE_CLOUDINARY_PRESET=YOUR_OWN_CLOUDINARY_PRESET
-VITE_FORMIK_SECRET=YOUR_OWN_FORMIK_SECRET
+git clone https://github.com/your-username/your-repo.git
 ```
 
-**Note:** Replace the **{CLOUD_NAME}** with your own cloudinary cloud name
+Replace **your-username** with your GitHub username and **your-repo** with the name of your repository.
 
-<li>Add .env file in root directory for the backend which contains</li>
+<li>Open the project and rename <strong>.env.example</strong> files to <strong>.env</strong> in both client and server directory.</li>
 
-```
-PORT=5000
-MONGODB_URI=YOUR_OWN_MONGODB_URL
-ACCESS_TOKEN_SECRET=YOUR_JWT_SECRET_FOR_ACCESS_TOKEN
-REFRESH_TOKEN_SECRET=YOUR_JWT_SECRET_FOR_REFRESH_TOKEN
-CLIENT_BASE_URL=FRONTEND_URL
-STRIPE_KEY=YOUR_OWN_STRIPE_KEY
-STRIPE_PRICE_ID=PRICE_ID_GENERATED_FROM_STRIPE
-```
+<li>Add your own environment variables to these both files.</li>
 
-<li>To run the frontend, open a new terminal and run 'cd client/' to go to client directory and execute: npm run dev</li>
-<li>To run the backend, go to root directory in the terminal and execute: nodemon server.js</li>
+<li>Add <strong>'http://localhost:5173/'</strong> and <strong>'http://localhost:5000/'</strong> to <strong>allowedOrigins</strong> array present in the path <strong>server/config/allowedOrigins.</strong></li>
+
+<li>To run the frontend, open a new terminal and run 'cd client/' to go to client directory and execute: npm run dev.</li>
+
+<li>To run the backend, open a new terminal and run 'cd server/' to go to server directory and execute: nodemon index.js</li>
+
+<li>Open http://localhost:5173/ from your browser to run the webapp.</li>
 </ol>
 
-### To access the admin dashboard
+
+### Steps to access the admin dashboard
 
 <ol>
-<li>Download the project from the git repository</li>
-<li>You need to create your own MongoDB instance and add the MongoDB url to the .env file</li>
-<li>Sign up on the website and open your MongoDB collection and manually add the <strong>Admin</strong> field with the value <strong>100</strong> to the object <strong>roles</strong> in a document and then Sign in back on the site</li>
-<li>Now you will be able to access the admin dashboard</li>
+<li>After running the webapp on your machine sign up on the website.</li> 
+<li>Now open your MongoDB collection and manually add the <strong>Admin</strong> element in the array of <strong>roles</strong> field for the user you want to make admin and then Sign in back on the site.</li>
+<li>Now you will be able to access the admin dashboard.</li>
 </ol>
+
+<hr/>
+
+<p align="right"><a href="#top">Back to Top</a></p>
+
 
 ### Home page
 
@@ -131,22 +185,12 @@ STRIPE_PRICE_ID=PRICE_ID_GENERATED_FROM_STRIPE
 
 <hr/>
 
-<br/>
+### Licenses
 
-### Tools and technologies used :
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-<a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a>
-<a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="35" height="35"/> </a>
-<a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="35" height="35"/> </a>
-<a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a>
-<a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://github.com/MarioTerron/logo-images/raw/master/logos/expressjs.png" alt="express"  height="20"/> </a>
-<a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a>
-<a href="https://redux.js.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/> </a>
-<a href="https://mui.com/" target="_blank" rel="noreferrer"> <img src="https://devicons.railway.app/i/materialui.svg" alt="material-ui" width="35" height="35"/> </a>
-<a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/> </a>
-<br/>
+Terms and conditions for use, reproduction and distribution are under the [MIT License](https://opensource.org/license/mit/).
 
-<h3 align="left">Connect with me:</h3>
+<p align="right"><a href="#top">Back to Top</a></p>
 
-<p><a href="https://github.com/Avinash905" target="_blank"><img alt="Github" src="https://img.shields.io/badge/GitHub-%2312100E.svg?&style=for-the-badge&logo=Github&logoColor=white" /></a> <a href="https://twitter.com/avinashdunna" target="_blank"><img alt="Twitter" src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a> <a href="https://www.linkedin.com/in/dunna-avinash" target="_blank"><img alt="LinkedIn" src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+</div>

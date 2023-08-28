@@ -18,18 +18,16 @@ import {
   RestaurantMenu,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logOut, selectCurrentToken } from "../../features/auth/authSlice";
-import jwtDecode from "jwt-decode";
-import { useSelector } from "react-redux";
-import ROLES from "../../common/roles";
+import useAuth from "../../hooks/useAuth";
+import { useLogoutMutation } from "../../features/auth/authApiSlice";
 
 const Avatar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const decoded = jwtDecode(useSelector(selectCurrentToken)).UserInfo;
+  const user = useAuth();
+
+  const [logout] = useLogoutMutation();
 
   const open = Boolean(anchorEl);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClick = (event) => {
@@ -42,7 +40,8 @@ const Avatar = () => {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    dispatch(logOut());
+    logout();
+    localStorage.setItem("persist", false);
     navigate("/auth/signin");
   };
 
@@ -58,8 +57,8 @@ const Avatar = () => {
           aria-expanded={open ? "true" : undefined}
         >
           <MuiAvatar
-            alt={decoded?.name}
-            src={decoded?.profilePicture}
+            alt={user?.name}
+            src={user?.profilePicture}
             sx={{ width: 34, height: 34 }}
           />
         </IconButton>
@@ -104,16 +103,14 @@ const Avatar = () => {
             className="flex items-center"
           >
             <MuiAvatar
-              alt={decoded?.name}
-              src={decoded?.profilePicture}
+              alt={user?.name}
+              src={user?.profilePicture}
               sx={{ width: 32, height: 32, mr: 2 }}
             />{" "}
             Profile
           </Link>
         </MenuItem>
-        {decoded?.roles?.find((role) =>
-          [ROLES.Admin, ROLES.ProUser]?.includes(role?.toString())
-        ) && (
+        {(user?.isAdmin || user?.isProUser) && (
           <Box>
             <Divider />
             <MenuItem>

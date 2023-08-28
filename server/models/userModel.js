@@ -19,16 +19,8 @@ const schema = mongoose.Schema(
       },
     ],
     roles: {
-      BasicUser: {
-        type: Number,
-        default: 101,
-      },
-      ProUser: {
-        type: Number,
-      },
-      Admin: {
-        type: Number,
-      },
+      type: [String],
+      default: ["BasicUser"],
     },
     isDisabled: { type: Boolean, default: false },
     refreshToken: { type: [String] },

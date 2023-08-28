@@ -7,6 +7,7 @@ import { useSignInMutation } from "../../features/auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
+import useTitle from "../../hooks/useTitle";
 
 const SignIn = () => {
   const [formDetails, setFormDetails] = useState({
@@ -16,6 +17,7 @@ const SignIn = () => {
   const [signIn, { isLoading }] = useSignInMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useTitle("Recipen - Sign In");
 
   const handleChange = (e) => {
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
@@ -34,6 +36,7 @@ const SignIn = () => {
         }
       );
       dispatch(setCredentials({ ...userData }));
+      localStorage.setItem("persist", true);
       setFormDetails({ email: "", password: "" });
       navigate("/");
     } catch (error) {

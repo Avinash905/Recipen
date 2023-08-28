@@ -5,19 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { Rating } from "@mui/material";
 import dateFormat from "../../common/dateFormat";
 import { toast } from "react-toastify";
-import jwtDecode from "jwt-decode";
 import { useToggleFavoriteMutation } from "../../features/recipe/recipeApiSlice";
-import {
-  selectCurrentToken,
-  setCredentials,
-} from "../../features/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 import ShareButton from "../shareButton/ShareButton";
+import useAuth from "../../hooks/useAuth";
 
 const SingleCard = ({ singleData, type }) => {
-  const user = useSelector(selectCurrentToken)
-    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
-    : null;
+  const user = useAuth();
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -60,7 +56,7 @@ const SingleCard = ({ singleData, type }) => {
           {/* Only for singleData */}
           {/* Favorite & share button */}
           {type === "recipe" && (
-            <div className="absolute top-2 right-0 flex flex-col gap-2 p-2 bg-light rounded-l-lg">
+            <div className="absolute top-2 right-0 flex flex-col gap-2 p-2 bg-light rounded-l-lg z-10">
               {user?.favorites?.some((ele) => ele === singleData._id) ? (
                 <AiFillHeart
                   className="text-2xl text-red-500 cursor-pointer"

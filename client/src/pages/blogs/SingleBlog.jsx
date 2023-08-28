@@ -19,14 +19,15 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import dateFormat from "../../common/dateFormat";
 import { toast } from "react-toastify";
-import jwtDecode from "jwt-decode";
-import { selectCurrentToken } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import ReactMarkdown from "react-markdown";
+import useAuth from "../../hooks/useAuth";
 
 const SingleBlog = () => {
+  useTitle("Recipen - Blog");
+
+  const user = useAuth();
   const { id } = useParams();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -36,10 +37,6 @@ const SingleBlog = () => {
   const [commentBlog, { isLoading }] = useCommentBlogMutation();
   const [deleteComment] = useDeleteCommentBlogMutation();
   const [deleteBlog] = useDeleteBlogMutation();
-
-  const user = useSelector(selectCurrentToken)
-    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
-    : null;
 
   const [formDetails, setFormDetails] = useState({
     name: user?.name || "",
@@ -53,7 +50,10 @@ const SingleBlog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!user) {
+      toast.error("You must sign in first");
+      return navigate("/auth/signin");
+    }
     try {
       await toast.promise(
         commentBlog({ blogId: id, comment: formDetails.message }).unwrap(),

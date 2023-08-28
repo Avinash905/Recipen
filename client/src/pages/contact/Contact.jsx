@@ -9,18 +9,17 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 import { motion } from "framer-motion";
-import jwtDecode from "jwt-decode";
-import { useSelector } from "react-redux";
-import { selectCurrentToken } from "../../features/auth/authSlice";
+import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 const Contact = () => {
-  const decoded = useSelector(selectCurrentToken)
-    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
-    : null;
+  const user = useAuth();
+  useTitle("Recipen - Contact Us");
+
   const [formDetails, setFormDetails] = useState({
     firstName: "",
     lastName: "",
-    email: decoded?.email || "",
+    email: user?.email || "",
     message: "",
   });
   const [focused, setFocused] = useState(false);

@@ -16,34 +16,35 @@ const getAllUsers = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { name, email, password, image } = req.body;
+
+    const foundUser = await User.findOne({ email });
+
+    if (foundUser._id.toString() !== req.user) {
+      return res.status(409).json({ message: "Email already in use" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        email,
-        profilePicture: image ? image : null,
-        password: hashedPassword,
-      },
-      { new: true }
-    );
+    foundUser.name = name;
+    foundUser.email = email;
+    foundUser.password = hashedPassword;
+    foundUser.profilePicture = image || foundUser.profilePicture;
 
-    const roles = Object.values(user.roles);
+    await foundUser.save();
 
     const accessToken = jwt.sign(
       {
         UserInfo: {
-          userId: user._id,
-          name: user.name,
-          email: user.email,
-          profilePicture: user.profilePicture,
-          roles: roles,
-          favorites: user.favorites,
+          userId: req.params._id,
+          name: name,
+          email: email,
+          profilePicture: image || foundUser.profilePicture,
+          roles: foundUser.roles,
+          favorites: foundUser.favorites,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "30m" }
     );
     return res.status(201).json({ accessToken });
   } catch (error) {

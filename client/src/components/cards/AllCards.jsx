@@ -26,6 +26,7 @@ const index = ({ mainTitle, tagline, type, data }) => {
           <input
             type="text"
             value={searchTerm}
+            name="search"
             onChange={(e) => setSearchTerm(e.target.value)}
             className="focus:outline-none w-full py-2"
             placeholder={`Search ${type}...`}

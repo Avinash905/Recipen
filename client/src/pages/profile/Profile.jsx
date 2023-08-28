@@ -5,24 +5,25 @@ import { IoMailOutline } from "react-icons/io5";
 import { AiOutlineUser } from "react-icons/ai";
 import { profileBg } from "../../assets";
 import { CircularProgress, Avatar as MuiAvatar } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCurrentToken,
-  setCredentials,
-} from "../../features/auth/authSlice";
-import jwtDecode from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
 import uploadImage from "../../common/uploadImage";
 import { toast } from "react-toastify";
 import { useUpdateUserMutation } from "../../features/user/userApiSlice";
+import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 const Profile = () => {
-  const user = jwtDecode(useSelector(selectCurrentToken))?.UserInfo;
+  const user = useAuth();
+  useTitle("Recipen - Profile");
+
   const [formDetails, setFormDetails] = useState({
     name: user?.name || "",
     email: user?.email || "",
     image: "",
     password: "",
   });
+
   const [progress, setProgress] = useState(0);
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const dispatch = useDispatch();
@@ -43,8 +44,8 @@ const Profile = () => {
         updateUser({ ...formDetails, userId: user?.userId }).unwrap(),
         {
           pending: "Please wait...",
-          success: "User added successfully",
-          error: "Unable to add user",
+          success: "User updated successfully",
+          error: "Unable to update user",
         }
       );
       setFormDetails({

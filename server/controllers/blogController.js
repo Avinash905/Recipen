@@ -14,6 +14,9 @@ const getBlog = async (req, res, next) => {
     const blog = await Blog.findOne({ _id: req.params.id })
       .populate("author", "name")
       .populate("comments.user", ["name", "profilePicture"]);
+
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
     res.status(200).json(blog);
   } catch (error) {
     next(error);
@@ -42,14 +45,19 @@ const updateBlog = async (req, res, next) => {
       return res.status(422).json({ message: "Insufficient data" });
     }
 
-    const blog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      {
-        ...req.body,
-      },
-      { new: true }
-    );
-    return res.status(201).json(blog);
+    const foundBlog = await Blog.findById(req.params.id);
+    if (!foundBlog) return res.status(404).json({ message: "Blog not found" });
+
+    if (foundBlog.author !== req.user)
+      return res.status(401).json({ message: "Unauthorized" });
+
+    foundBlog.title = title;
+    foundBlog.image = image;
+    foundBlog.description = description;
+
+    const updatedBlog = await foundBlog.save();
+
+    return res.status(201).json(updatedBlog);
   } catch (error) {
     next(error);
   }
@@ -57,7 +65,15 @@ const updateBlog = async (req, res, next) => {
 
 const deleteBlog = async (req, res, next) => {
   try {
-    const blog = await Blog.findOneAndDelete({ _id: req.params.id });
+    const foundBlog = await Blog.findById(req.params.id);
+
+    if (!foundBlog) return res.status(404).json({ message: "Blog not found" });
+
+    if (foundBlog.author !== req.user)
+      return res.status(401).json({ message: "Unauthorized" });
+
+    await foundBlog.deleteOne({ _id: req.params.id });
+
     res.sendStatus(204);
   } catch (error) {
     next(error);
@@ -70,12 +86,12 @@ const addComment = async (req, res, next) => {
 
     // Validate userId and commentText
     if (!comment) {
-      return res.status(400).json({ error: "Comment is required." });
+      return res.status(400).json({ message: "Comment is required." });
     }
 
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
-      return res.status(404).json({ error: "Blog not found." });
+      return res.status(404).json({ message: "Blog not found." });
     }
 
     // Add the new comment
@@ -94,14 +110,14 @@ const deleteComment = async (req, res, next) => {
 
     const blog = await Blog.findById(blogId);
     if (!blog) {
-      return res.status(404).json({ error: "Blog not found." });
+      return res.status(404).json({ message: "Blog not found." });
     }
 
     const commentIndex = blog.comments.findIndex((comment) =>
       comment._id.equals(commentId)
     );
     if (commentIndex === -1) {
-      return res.status(404).json({ error: "Comment not found." });
+      return res.status(404).json({ message: "Comment not found." });
     }
 
     blog.comments.splice(commentIndex, 1);

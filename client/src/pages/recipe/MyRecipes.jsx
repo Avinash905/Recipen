@@ -1,18 +1,15 @@
 import React from "react";
 import { AllCards, ComponentLoading } from "../../components";
-import jwtDecode from "jwt-decode";
-import { selectCurrentToken } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
 import { useGetRecipesQuery } from "../../features/recipe/recipeApiSlice";
+import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 const index = () => {
   const { data, isLoading } = useGetRecipesQuery();
+  const user = useAuth();
+  useTitle("Recipen - My Recipes");
 
-  const userId = useSelector(selectCurrentToken)
-    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo.userId
-    : null;
-
-  const updatedData = data?.filter((obj) => obj.author._id === userId);
+  const updatedData = data?.filter((obj) => obj.author._id === user?.userId);
 
   return (
     <>

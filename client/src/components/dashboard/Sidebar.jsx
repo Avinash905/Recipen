@@ -1,21 +1,28 @@
 import React from "react";
 import { FiMenu } from "react-icons/fi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BiHomeAlt2 } from "react-icons/bi";
 import { BsFileEarmarkText } from "react-icons/bs";
 import { HiOutlineUsers, HiOutlineLogout } from "react-icons/hi";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { Logo } from "..";
-import { useSelector } from "react-redux";
-import { selectCurrentToken } from "../../features/auth/authSlice";
-import jwtDecode from "jwt-decode";
 import { Avatar as MuiAvatar } from "@mui/material";
+import useAuth from "../../hooks/useAuth";
+import { useLogoutMutation } from "../../features/auth/authApiSlice";
 
 const index = ({ isCollapsed, setIsCollapsed }) => {
-  const user = useSelector(selectCurrentToken)
-    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
-    : null;
+  const user = useAuth();
+
+  const [logout] = useLogoutMutation();
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    localStorage.setItem("persist", false);
+    navigate("/auth/signin");
+  };
 
   return (
     <motion.aside className="basis-0 h-screen p-6 flex flex-col justify-between bg-[#f4f4f4] border-r-2 border-gray-200">
@@ -96,6 +103,7 @@ const index = ({ isCollapsed, setIsCollapsed }) => {
         className={`mb-4 flex gap-2 items-center text-gray-600 rounded-lg hover:bg-gradient-to-r hover:from-primary hover:to-primaryLight hover:text-light p-2 cursor-pointer ml-2 ${
           isCollapsed && "justify-center"
         }`}
+        onClick={handleLogout}
       >
         <HiOutlineLogout />
         {!isCollapsed && "Logout"}

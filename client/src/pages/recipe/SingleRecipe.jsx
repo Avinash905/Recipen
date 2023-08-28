@@ -24,15 +24,16 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Rating, IconButton, Menu, MenuItem } from "@mui/material";
 import { toast } from "react-toastify";
-import jwtDecode from "jwt-decode";
-import {
-  selectCurrentToken,
-  setCredentials,
-} from "../../features/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 import { MoreVert } from "@mui/icons-material";
+import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 const SingleRecipe = () => {
+  useTitle("Recipen - Recipe");
+
+  const user = useAuth();
   const [rating, setRating] = useState(0);
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -46,10 +47,6 @@ const SingleRecipe = () => {
   const [deleteComment] = useDeleteCommentRecipeMutation();
   const [toggleFavorite] = useToggleFavoriteMutation();
   const [deleteRecipe] = useDeleteRecipeMutation();
-
-  const user = useSelector(selectCurrentToken)
-    ? jwtDecode(useSelector(selectCurrentToken)).UserInfo
-    : null;
 
   const [formDetails, setFormDetails] = useState({
     name: user?.name || "",
@@ -91,7 +88,10 @@ const SingleRecipe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!user) {
+      toast.error("You must sign in first");
+      return navigate("/auth/signin");
+    }
     try {
       await toast.promise(
         commentRecipe({ recipeId: id, comment: formDetails.message }).unwrap(),

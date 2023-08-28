@@ -24,13 +24,7 @@ router
 
 router
   .route("/:id")
-  .get(
-    [
-      verifyJwt,
-      verifyRoles(ROLES_LIST.Admin, ROLES_LIST.BasicUser, ROLES_LIST.ProUser),
-    ],
-    getBlog
-  )
+  .get(getBlog)
   .put(
     [verifyJwt, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.ProUser)],
     updateBlog

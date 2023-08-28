@@ -6,6 +6,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "../../features/auth/authApiSlice";
 import { toast } from "react-toastify";
+import useTitle from "../../hooks/useTitle";
 
 const SignUp = () => {
   const [formDetails, setFormDetails] = useState({
@@ -15,6 +16,7 @@ const SignUp = () => {
   });
   const [signUp, { isLoading }] = useSignUpMutation();
   const navigate = useNavigate();
+  useTitle("Recipen - Sign Up");
 
   const handleChange = (e) => {
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });

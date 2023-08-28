@@ -6,8 +6,11 @@ import uploadImage from "../../common/uploadImage";
 import { LinearProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import { useAddRecipeMutation } from "../../features/recipe/recipeApiSlice";
+import useTitle from "../../hooks/useTitle";
 
 const AddRecipe = () => {
+  useTitle("Recipen - Add Recipe");
+
   const [formDetails, setFormDetails] = useState({
     title: "",
     image: "",

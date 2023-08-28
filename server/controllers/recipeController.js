@@ -18,6 +18,9 @@ const getRecipe = async (req, res, next) => {
     const recipe = await Recipe.findOne({ _id: req.params.id })
       .populate("author", "name")
       .populate("comments.user", ["name", "profilePicture"]);
+
+    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
+
     res.status(200).send(recipe);
   } catch (error) {
     next(error);
@@ -71,19 +74,29 @@ const updateRecipe = async (req, res, next) => {
       !description ||
       !calories ||
       !cookingTime ||
-      !ingredients ||
-      !instructions
+      !ingredients.length ||
+      !instructions.length
     ) {
       return res.status(422).json({ message: "Insufficient data" });
     }
-    const recipe = await Recipe.findByIdAndUpdate(
-      req.params.id,
-      {
-        ...req.body,
-      },
-      { new: true }
-    );
-    res.status(201).json(recipe);
+
+    const foundRecipe = await Recipe.findById(req.params.id);
+    if (!foundRecipe)
+      return res.status(404).json({ message: "Recipe not found" });
+
+    if (foundRecipe.author !== req.user)
+      return res.status(401).json({ message: "Unauthorized" });
+
+    foundRecipe.title = title;
+    foundRecipe.description = description;
+    foundRecipe.image = image;
+    foundRecipe.calories = calories;
+    foundRecipe.ingredients = ingredients;
+    foundRecipe.cookingTime = cookingTime;
+    foundRecipe.instructions = instructions;
+
+    const updatedRecipe = await foundRecipe.save();
+    res.status(201).json(updatedRecipe);
   } catch (error) {
     next(error);
   }
@@ -95,7 +108,7 @@ const rateRecipe = async (req, res, next) => {
 
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
-      return res.status(404).json({ error: "Recipe not found." });
+      return res.status(404).json({ message: "Recipe not found." });
     }
 
     // Check if the user has already rated this recipe
@@ -105,7 +118,7 @@ const rateRecipe = async (req, res, next) => {
     if (existingRating) {
       return res
         .status(400)
-        .json({ error: "User has already rated this recipe" });
+        .json({ message: "User has already rated this recipe" });
     }
 
     // Add the new rating
@@ -120,7 +133,14 @@ const rateRecipe = async (req, res, next) => {
 
 const deleteRecipe = async (req, res, next) => {
   try {
-    const recipe = await Recipe.findOneAndDelete({ _id: req.params.id });
+    const foundRecipe = await Recipe.findById(req.params.id);
+    if (!foundRecipe)
+      return res.status(404).json({ message: "Recipe not found" });
+
+    if (foundRecipe.author !== req.user)
+      return res.status(401).json({ message: "Unauthorized" });
+
+    await foundRecipe.deleteOne({ _id: req.params.id });
     res.sendStatus(204);
   } catch (error) {
     next(error);
@@ -133,12 +153,12 @@ const addComment = async (req, res, next) => {
 
     // Validate userId and commentText
     if (!comment) {
-      return res.status(400).json({ error: "Comment is required." });
+      return res.status(400).json({ message: "Comment is required." });
     }
 
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
-      return res.status(404).json({ error: "Recipe not found." });
+      return res.status(404).json({ message: "Recipe not found." });
     }
 
     // Add the new comment
@@ -157,14 +177,14 @@ const deleteComment = async (req, res, next) => {
 
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
-      return res.status(404).json({ error: "Recipe not found." });
+      return res.status(404).json({ message: "Recipe not found." });
     }
 
     const commentIndex = recipe.comments.findIndex((comment) =>
       comment._id.equals(commentId)
     );
     if (commentIndex === -1) {
-      return res.status(404).json({ error: "Comment not found." });
+      return res.status(404).json({ message: "Comment not found." });
     }
 
     recipe.comments.splice(commentIndex, 1);
