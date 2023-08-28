@@ -196,7 +196,7 @@ Terms and conditions for use, reproduction and distribution are under the [MIT L
 
 ---
 
-<h3 align="center"> Give it a 🌟 if you 🧡 this project </h3>
+<h3 align="center"> Give it a 🌟 if you 🧡 this repository </h3>
 
 ---
 
