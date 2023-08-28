@@ -24,6 +24,8 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
 
 <br>
 
+---
+
 ### 🌐 Link:
 
 <h4> Live Site: https://recipen.vercel.app/ </h4>
