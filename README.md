@@ -1,6 +1,5 @@
-<h1 align="center">Recipen</h1>
-
 <div id="top">
+<h1 align="center">Recipen</h1>
 
 <div align="center">
   <br>
@@ -16,20 +15,22 @@
   </div>
   <br>
 
-
-<h3>Description :</h3>
+<h3>📝 Description :</h3>
 Explore a world of flavors with Recipen! Indulge in a community-driven platform where food enthusiasts share their cherished recipes and captivating food blogs. Join as a pro user to contribute your own culinary creations. Unlock a realm of taste, culture, and creativity.
 
-
+<div align="center">
 <img src="./client/src/assets/mockup-nobg.png" alt="mockup" />
+</div>
 
+<br>
 
-### Link:
+### 🌐 Link:
 
 <h4> Live Site: https://recipen.vercel.app/ </h4>
 
+<br>
 
-### Tools and technologies used :
+### 🛠️ Tools and technologies used :
 
 <div align=center>
 
@@ -47,8 +48,9 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
 
 </div>
 
+<br>
 
-### Connect with me:
+### 👋 Connect with me:
 
 <div align=center>
 
@@ -59,6 +61,7 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
 
 </div>
 
+<br>
 
 ### ✨Features :
 
@@ -82,11 +85,9 @@ Explore a world of flavors with Recipen! Indulge in a community-driven platform 
     <li><strong>Share Recipe on Social Media:</strong> Users can effortlessly share their favorite recipes on various social media platforms.</li>
 </ul>
 
-
 <hr/>
 
 <p align="right"><a href="#top">Back to Top</a></p>
-
 
 ### Steps to run the project on your local machine
 
@@ -113,6 +114,7 @@ Replace **your-username** with your GitHub username and **your-repo** with the n
 <li>Open http://localhost:5173/ from your browser to run the webapp.</li>
 </ol>
 
+<br>
 
 ### Steps to access the admin dashboard
 
@@ -125,7 +127,6 @@ Replace **your-username** with your GitHub username and **your-repo** with the n
 <hr/>
 
 <p align="right"><a href="#top">Back to Top</a></p>
-
 
 ### Home page
 
