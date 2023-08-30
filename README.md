@@ -111,9 +111,17 @@ Replace **your-username** with your GitHub username and **your-repo** with the n
 
 <li>Add <strong>'http://localhost:5173/'</strong> and <strong>'http://localhost:5000/'</strong> to <strong>allowedOrigins</strong> array present in the path <strong>server/config/allowedOrigins.</strong></li>
 
-<li>To run the frontend, open a new terminal and run 'cd client/' to go to client directory and execute: npm run dev.</li>
+<li>To run the frontend, open a new terminal and run 'cd client/' to go to client directory and execute:</li>
 
-<li>To run the backend, open a new terminal and run 'cd server/' to go to server directory and execute: nodemon index.js</li>
+```
+npm run dev
+```
+
+<li>To run the backend, open a new terminal and run 'cd server/' to go to server directory and execute:</li>
+
+```
+nodemon index.js
+```
 
 <li>Open http://localhost:5173/ from your browser to run the webapp.</li>
 </ol>
