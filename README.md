@@ -123,7 +123,7 @@ npm run dev
 nodemon index.js
 ```
 
-<li>Open http://localhost:5173/ from your browser to run the webapp.</li>
+<li>Open <strong>http://localhost:5173/</strong>strong> from your browser to run the webapp.</li>
 </ol>
 
 <br>
