@@ -23,7 +23,7 @@ const Users = () => {
   const handleDisable = (_id) => {
     disableUser(_id);
   };
-
+  console.log(data);
   useEffect(() => {
     if (!isLoading) {
       dispatch(setUsers(data));
@@ -71,16 +71,16 @@ const Users = () => {
               "rounded text-sm py-1 px-3 mx-auto w-[40%] shadow-none bg-gray-200 text-gray-700 flex items-center gap-2 justify-evenly"
             }
           >
-            {roles?.hasOwnProperty("Admin") ? (
+            {roles?.includes("Admin") ? (
               <MdAdminPanelSettings />
-            ) : roles?.hasOwnProperty("ProUser") ? (
+            ) : roles?.includes("ProUser") ? (
               <RiAdminFill />
             ) : (
               <BiSolidUser />
             )}
-            {roles?.hasOwnProperty("Admin")
+            {roles?.includes("Admin")
               ? "Admin"
-              : roles?.hasOwnProperty("ProUser")
+              : roles?.includes("ProUser")
               ? "Pro User"
               : "Basic User"}
           </div>
