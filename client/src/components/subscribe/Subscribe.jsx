@@ -1,6 +1,7 @@
 import React from "react";
 import SubscribeCard from "../cards/SubscribeCard";
 import { AiOutlineThunderbolt } from "react-icons/ai";
+import { IoDiamondOutline } from "react-icons/io5";
 
 const Subscribe = () => {
   return (
@@ -30,7 +31,7 @@ const Subscribe = () => {
         <SubscribeCard
           title={"Pro"}
           icon={
-            <AiOutlineThunderbolt className="bg-primary text-light rounded-full p-1 text-3xl shadow-lg" />
+            <IoDiamondOutline className="bg-primary text-light rounded-full p-1 text-3xl shadow-lg" />
           }
           price={"₹999"}
           subtitle={"Best for professionals"}
