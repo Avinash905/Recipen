@@ -31,7 +31,7 @@ const Subscribe = () => {
         <SubscribeCard
           title={"Pro"}
           icon={
-            <IoDiamondOutline className="bg-primary text-light rounded-full p-1 text-2xl shadow-lg" />
+            <IoDiamondOutline className="bg-primary text-light rounded-full p-1.5 text-3xl shadow-lg" />
           }
           price={"₹999"}
           subtitle={"Best for professionals"}
