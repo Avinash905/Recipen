@@ -23,6 +23,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import ReactMarkdown from "react-markdown";
 import useAuth from "../../hooks/useAuth";
+import useTitle from "../../hooks/useTitle";
 
 const SingleBlog = () => {
   useTitle("Recipen - Blog");
