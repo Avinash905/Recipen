@@ -35,7 +35,11 @@ const Subscribe = () => {
           price={"₹999"}
           subtitle={"Best for professionals"}
           featureTitle={"Everything in Basic, plus:"}
-          features={["Add your own recipe", "Add your own blog", "hello3"]}
+          features={[
+            "Add your own recipe",
+            "Add your own blog",
+            "Manage your content",
+          ]}
           btnText={"Get started"}
         />
       </div>
