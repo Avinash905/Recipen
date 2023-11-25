@@ -109,7 +109,7 @@ Replace **your-username** with your GitHub username and **your-repo** with the n
 
 <li>Add your own environment variables to these both files.</li>
 
-<li>Add <strong>'http://localhost:5173/'</strong> and <strong>'http://localhost:5000/'</strong> to <strong>allowedOrigins</strong> array present in the path <strong>server/config/allowedOrigins.</strong></li>
+<li>Add <strong>http://localhost:5173/</strong> and <strong>http://localhost:5000/</strong> to <strong>allowedOrigins</strong> array present in the path <strong>server/config/allowedOrigins.</strong></li>
 
 <li>To run the frontend, open a new terminal and run 'cd client/' to go to client directory and execute:</li>
 
