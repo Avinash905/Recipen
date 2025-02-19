@@ -22,19 +22,19 @@ app.use(cookieParser());
 app.use(express.json());
 
 // route middleware
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/user", require("./routes/userRoutes"));
-app.use("/api/recipe", require("./routes/recipeRoutes"));
-app.use("/api/blog", require("./routes/blogRoutes"));
-app.use("/api/stripe", require("./routes/subscriptionRoutes"));
+app.use("/auth", require("./routes/authRoutes"));
+app.use("/users", require("./routes/userRoutes"));
+app.use("/recipe", require("./routes/recipeRoutes"));
+app.use("/blog", require("./routes/blogRoutes"));
+app.use("/stripe", require("./routes/subscriptionRoutes"));
 
 app.use(errorHandler);
 
 connectDB()
-  .then(() => {
-    console.log("Connected to MongoDB");
-    app.listen(port, () => console.log(`Server running on port ${port}`));
-  })
-  .catch((err) => {
-    console.error(`Error connecting to MongoDB ${err}`);
-  });
+    .then(() => {
+        console.log("Connected to MongoDB");
+        app.listen(port, () => console.log(`Server running on port ${port}`));
+    })
+    .catch((err) => {
+        console.error(`Error connecting to MongoDB ${err}`);
+    });
