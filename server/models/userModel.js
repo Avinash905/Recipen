@@ -59,7 +59,7 @@ const schema = new mongoose.Schema(
         },
         isDisabled: { type: Boolean, default: false },
         refreshToken: { type: [String] },
-        favouriteList: [
+        favorites: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Recipe",

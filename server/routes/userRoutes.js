@@ -28,10 +28,7 @@ router
             verifyOwn(),
         ],
         getUser
-    );
-
-router
-    .route("/:id")
+    )
     .put(
         [
             verifyJwt,

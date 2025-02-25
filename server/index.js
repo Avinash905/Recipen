@@ -25,7 +25,7 @@ app.use(express.json());
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/roles", require("./routes/roleRoutes"));
-app.use("/recipe", require("./routes/recipeRoutes"));
+app.use("/recipes", require("./routes/recipeRoutes"));
 app.use("/blog", require("./routes/blogRoutes"));
 app.use("/stripe", require("./routes/subscriptionRoutes"));
 

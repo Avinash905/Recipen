@@ -12,12 +12,13 @@ const login = async (req, res, next) => {
                 .json({ message: "Email and password are required" });
         }
 
-        const foundUser = await User.findOne({ email });
+        const foundUser = await User.findOne({
+            email,
+            isDisabled: false,
+        }).populate("roleId", "roleName");
+
         if (!foundUser) {
             return res.status(401).json({ message: "Unauthorized" });
-        }
-        if (foundUser.disabled) {
-            return res.status(403).json({ message: "Account terminated" });
         }
 
         const match = await bcrypt.compare(password, foundUser.password);
@@ -26,9 +27,7 @@ const login = async (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const role = await Role.findById(foundUser.roleId.toString());
-
-        if (!role) {
+        if (!foundUser.roleId && !foundUser.roleId.roleName) {
             return res.status(401).json({ message: "Role not found" });
         }
 
@@ -41,9 +40,9 @@ const login = async (req, res, next) => {
                     email: foundUser.email,
                     profileImage: foundUser.profileImage,
                     roleId: foundUser.roleId,
-                    roles: [role.roleName],
+                    roles: [foundUser.roleId.roleName],
                     contactNumber: foundUser.contactNumber,
-                    // favorites: foundUser.favorites,
+                    favorites: foundUser.favorites,
                 },
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -80,13 +79,16 @@ const refreshToken = async (req, res) => {
 
     const refreshToken = cookies.jwt;
 
-    const foundUser = await User.findOne({ refreshToken });
+    const foundUser = await User.findOne({ refreshToken }).populate(
+        "roleId",
+        "roleName"
+    );
+
     if (!foundUser) {
         return res.status(403).json({ message: "Forbidden" });
     }
 
-    const role = await Role.findById(foundUser.roleId.toString());
-    if (!role) {
+    if (!foundUser.roleId && !foundUser.roleId.roleName) {
         return res.status(401).json({ message: "Role not found" });
     }
 
@@ -107,9 +109,9 @@ const refreshToken = async (req, res) => {
                         email: foundUser.email,
                         profileImage: foundUser.profileImage,
                         roleId: foundUser.roleId,
-                        roles: [role.roleName],
+                        roles: [foundUser.roleId.roleName],
                         contactNumber: foundUser.contactNumber,
-                        // favorites: foundUser.favorites,
+                        favorites: foundUser.favorites,
                     },
                 },
                 process.env.ACCESS_TOKEN_SECRET,

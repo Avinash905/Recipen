@@ -26,10 +26,7 @@ router
     .get(
         [verifyJwt, verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.Admin)],
         getRole
-    );
-
-router
-    .route("/:id")
+    )
     .put([verifyJwt, verifyRoles(ROLES_LIST.Admin)], updateRole);
 
 router

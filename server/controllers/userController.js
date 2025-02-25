@@ -15,7 +15,10 @@ const getAllUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
     try {
-        const user = await User.findOne({ _id: req.params.id });
+        const user = await User.findOne({
+            _id: req.params.id,
+            isDisabled: false,
+        });
 
         if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -69,9 +72,18 @@ const updateUser = async (req, res, next) => {
         const { firstName, lastName, contactNumber, email, password, image } =
             req.body;
 
-        const foundUser = await User.findOne({ email });
+        // disabled cannot be edited
+        const foundUser = await User.findOne({
+            _id: req.params.id,
+            isDisabled: false,
+        });
+        if (!foundUser) {
+            return res.status(409).json({ message: "User not found" });
+        }
 
-        if (foundUser._id.toString() !== req.user) {
+        // check that email is not in used
+        const foundEmail = await User.findOne({ email, isDisabled: false });
+        if (foundEmail._id.toString() !== req.user) {
             return res.status(409).json({ message: "Email already in use" });
         }
 
@@ -97,8 +109,9 @@ const updateUser = async (req, res, next) => {
                     lastName: lastName,
                     contactNumber: contactNumber,
                     email: email,
-                    profilePicture: image || foundUser.profilePicture,
-                    roles: foundUser.roles,
+                    profileImage: image || foundUser.profileImage,
+                    roleId: foundUser.roleId,
+                    roles: [foundUser.roleId.roleName],
                     favorites: foundUser.favorites,
                 },
             },
