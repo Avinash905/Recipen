@@ -28,6 +28,7 @@ app.use("/roles", require("./routes/roleRoutes"));
 app.use("/recipes", require("./routes/recipeRoutes"));
 app.use("/blog", require("./routes/blogRoutes"));
 app.use("/stripe", require("./routes/subscriptionRoutes"));
+app.use("/upload", require("./routes/imageRoutes"));
 
 app.use(errorHandler);
 
