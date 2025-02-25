@@ -23,7 +23,7 @@ const schema = new mongoose.Schema(
         email: {
             type: String,
             required: [true, "Email is required"],
-            unique: true,
+            // unique: true,
             validate: {
                 validator: function (value) {
                     const emailRegex =
@@ -47,17 +47,24 @@ const schema = new mongoose.Schema(
         password: {
             type: String,
             required: [true, "Password is required"],
-            minLength: 8,
-            maxLength: 20,
         },
         profileImage: {
             type: String,
             required: false,
         },
         roleId: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Role",
             required: true,
         },
+        isDisabled: { type: Boolean, default: false },
+        refreshToken: { type: [String] },
+        favouriteList: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Recipe",
+            },
+        ],
     },
     { timestamps: true }
 );

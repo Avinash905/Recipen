@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await User.find()
-            .find({ _id: { $ne: req.user } })
+            .find({ isDisabled: false })
             .select(["-password", "-refreshToken", "-favorites"]);
         res.status(200).json(users);
     } catch (error) {
@@ -13,18 +13,39 @@ const getAllUsers = async (req, res, next) => {
     }
 };
 
+const getUser = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ _id: req.params.id });
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        res.status(200).send(user);
+    } catch (error) {
+        next(error);
+    }
+};
+
 const createUser = async (req, res, next) => {
     try {
-        const newUser = new User(req.body);
+        const { email } = req.body;
+        const foundUser = await User.findOne({ email, isDisabled: false });
+
+        if (foundUser) {
+            return res.status(409).json({ message: "Email already in use" });
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = await User({
+            ...req.body,
+            password: hashedPassword,
+        });
+
         await newUser
             .save()
             .then((savedUser) => {
-                console.log(savedUser);
                 res.status(201).json({ msg: "New user created successfully" });
             })
             .catch((error) => {
-                console.log(error);
-
                 if (
                     error.code === 11000 &&
                     error.keyPattern &&
@@ -33,7 +54,7 @@ const createUser = async (req, res, next) => {
                     res.status(500).json({ msg: "Email already in use" });
                 } else {
                     res.status(500).json({
-                        msg: "Unable to create a new user",
+                        msg: error,
                     });
                 }
             });
@@ -45,7 +66,8 @@ const createUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     try {
-        const { name, email, password, image } = req.body;
+        const { firstName, lastName, contactNumber, email, password, image } =
+            req.body;
 
         const foundUser = await User.findOne({ email });
 
@@ -53,12 +75,17 @@ const updateUser = async (req, res, next) => {
             return res.status(409).json({ message: "Email already in use" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        let hashedPassword = null;
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
 
-        foundUser.name = name;
+        foundUser.firstName = firstName;
+        foundUser.lastName = lastName;
+        foundUser.contactNumber = contactNumber;
         foundUser.email = email;
-        foundUser.password = hashedPassword;
-        foundUser.profilePicture = image || foundUser.profilePicture;
+        foundUser.password = hashedPassword || foundUser.password;
+        foundUser.profileImage = image || foundUser.profileImage;
 
         await foundUser.save();
 
@@ -66,7 +93,9 @@ const updateUser = async (req, res, next) => {
             {
                 UserInfo: {
                     userId: req.params._id,
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
+                    contactNumber: contactNumber,
                     email: email,
                     profilePicture: image || foundUser.profilePicture,
                     roles: foundUser.roles,
@@ -94,4 +123,4 @@ const disableUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getAllUsers, updateUser, disableUser, createUser };
+module.exports = { getAllUsers, updateUser, disableUser, createUser, getUser };
