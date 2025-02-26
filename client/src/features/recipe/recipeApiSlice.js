@@ -3,16 +3,16 @@ import { apiSlice } from "../../redux/apiSlice";
 export const recipeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getRecipe: builder.query({
-      query: (recipeId) => `/recipe/${recipeId}`,
+      query: (recipeId) => `/recipes/${recipeId}`,
       providesTags: ["recipes"],
     }),
     getRecipes: builder.query({
-      query: () => "/recipe",
+      query: () => "/recipes/list",
       providesTags: ["recipes"],
     }),
     addRecipe: builder.mutation({
       query: (recipeData) => ({
-        url: "/recipe",
+        url: "/recipes",
         method: "POST",
         body: { ...recipeData },
       }),
@@ -22,7 +22,7 @@ export const recipeApiSlice = apiSlice.injectEndpoints({
       query: (args) => {
         const { recipeId, ...recipeData } = args;
         return {
-          url: `/recipe/${recipeId}`,
+          url: `/recipes/${recipeId}`,
           method: "PUT",
           body: { ...recipeData },
         };
@@ -33,7 +33,7 @@ export const recipeApiSlice = apiSlice.injectEndpoints({
       query: (args) => {
         const { recipeId, rating } = args;
         return {
-          url: `/recipe/rate/${recipeId}`,
+          url: `/recipes/rate/${recipeId}`,
           method: "PUT",
           body: { rating },
         };
@@ -42,7 +42,7 @@ export const recipeApiSlice = apiSlice.injectEndpoints({
     }),
     deleteRecipe: builder.mutation({
       query: (recipeId) => ({
-        url: `/recipe/${recipeId}`,
+        url: `/recipes/${recipeId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["recipes"],
@@ -51,7 +51,7 @@ export const recipeApiSlice = apiSlice.injectEndpoints({
       query: (args) => {
         const { recipeId, comment } = args;
         return {
-          url: `/recipe/comment/${recipeId}`,
+          url: `/recipes/comment/${recipeId}`,
           method: "PUT",
           body: { comment },
         };
@@ -71,7 +71,7 @@ export const recipeApiSlice = apiSlice.injectEndpoints({
     toggleFavorite: builder.mutation({
       query: ({ recipeId }) => {
         return {
-          url: `/recipe/favorite/${recipeId}`,
+          url: `/recipes/favorite/${recipeId}`,
           method: "PUT",
         };
       },

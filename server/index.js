@@ -9,11 +9,16 @@ const mongoose = require("mongoose");
 const connectDB = require("./db/conn");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 
 // cors middleware
 app.use(credentials);
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow frontend to access backend
+    credentials: true, // If using cookies, authentication, etc.
+  })
+);
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,10 +38,10 @@ app.use("/upload", require("./routes/imageRoutes"));
 app.use(errorHandler);
 
 connectDB()
-    .then(() => {
-        console.log("Connected to MongoDB");
-        app.listen(port, () => console.log(`Server running on port ${port}`));
-    })
-    .catch((err) => {
-        console.error(`Error connecting to MongoDB ${err}`);
-    });
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+  })
+  .catch((err) => {
+    console.error(`Error connecting to MongoDB ${err}`);
+  });

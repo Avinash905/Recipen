@@ -3,14 +3,21 @@ import { apiSlice } from "../../redux/apiSlice";
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/user",
+      query: () => "/users",
       providesTags: ["users"],
+    }),
+    createUser: builder.mutation({
+      query: (credentials) => ({
+        url: "/users/create",
+        method: "POST",
+        body: { ...credentials },
+      }),
     }),
     updateUser: builder.mutation({
       query: (args) => {
         const { userId, ...userData } = args;
         return {
-          url: `/user/${userId}`,
+          url: `/users/${userId}`,
           method: "PUT",
           body: { ...userData },
         };
@@ -19,7 +26,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     disableUser: builder.mutation({
       query: (userId) => ({
-        url: `/user/disable/${userId}`,
+        url: `/users/disable/${userId}`,
         method: "PUT",
       }),
       invalidatesTags: ["users"],
@@ -36,6 +43,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
+  useCreateUserMutation,
   useUpdateUserMutation,
   useDisableUserMutation,
   useSubscribeUserMutation,

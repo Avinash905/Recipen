@@ -4,7 +4,7 @@ import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignUpMutation } from "../../features/auth/authApiSlice";
+import { useCreateUserMutation } from "../../features/user/userApiSlice";
 import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
 
@@ -14,7 +14,7 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  const [signUp, { isLoading }] = useSignUpMutation();
+  const [signUp, { isLoading }] = useCreateUserMutation();
   const navigate = useNavigate();
   useTitle("Recipen - Sign Up");
 
@@ -54,19 +54,13 @@ const SignUp = () => {
           </h2>
           <p className="text-center md:text-left text-sm">
             Already have an account?{" "}
-            <Link
-              to={"/auth/signin"}
-              className="text-primary font-semibold"
-            >
+            <Link to={"/auth/signin"} className="text-primary font-semibold">
               Sign In
             </Link>
           </p>
         </div>
         {/* Sign up form */}
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={handleSubmit}
-        >
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             type={"text"}
             id={"name"}
@@ -105,7 +99,7 @@ const SignUp = () => {
             pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$`}
           />
           <Button
-            content={"Sign in"}
+            content={"Sign Up"}
             type={"submit"}
             customCss={"mt-3 rounded-lg"}
             loading={isLoading}
