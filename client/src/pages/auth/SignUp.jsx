@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Input, Logo } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
+import { BiPhone } from "react-icons/bi";
 import { BiLockAlt } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,8 +11,10 @@ import useTitle from "../../hooks/useTitle";
 
 const SignUp = () => {
   const [formDetails, setFormDetails] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
+    contactNumber: "",
     password: "",
   });
   const [signUp, { isLoading }] = useCreateUserMutation();
@@ -34,7 +37,13 @@ const SignUp = () => {
           error: "Sign up failed",
         }
       );
-      setFormDetails({ name: "", email: "", password: "" });
+      setFormDetails({
+        firstName: "",
+        lastName: "",
+        email: "",
+        contactNumber: "",
+        password: "",
+      });
       navigate("/auth/signin");
     } catch (error) {
       toast.error(error.data);
@@ -63,12 +72,25 @@ const SignUp = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             type={"text"}
-            id={"name"}
+            id={"firstName"}
             icon={<AiOutlineUser />}
             handleChange={handleChange}
-            value={formDetails.name}
-            label={"Full Name"}
-            placeholder={"John Doe"}
+            value={formDetails.firstName}
+            label={"First Name"}
+            placeholder={"John"}
+            errorMessage={
+              "Name should be more than 3 characters long and should not include special characters!"
+            }
+            pattern={"^[a-zA-Z]{3,}(?: [a-zA-Z]{3,})*$"}
+          />
+          <Input
+            type={"text"}
+            id={"lastName"}
+            icon={<AiOutlineUser />}
+            handleChange={handleChange}
+            value={formDetails.lastName}
+            label={"Last Name"}
+            placeholder={"Doe"}
             errorMessage={
               "Name should be more than 3 characters long and should not include special characters!"
             }
@@ -84,6 +106,19 @@ const SignUp = () => {
             placeholder={"example@abc.com"}
             errorMessage={"Enter a valid email address!"}
             pattern={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/}
+          />
+          <Input
+            type={"text"}
+            id={"contactNumber"}
+            icon={<BiPhone />}
+            handleChange={handleChange}
+            value={formDetails.contactNumber}
+            label={"Contact Number"}
+            placeholder={"81234567"}
+            errorMessage={
+              "Number should be more than 3 characters long and should not include special characters!"
+            }
+            pattern={"^[0-9]{8}$"}
           />
           <Input
             type={"password"}

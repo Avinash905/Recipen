@@ -10,7 +10,7 @@ import { Avatar as MuiAvatar, Rating } from "@mui/material";
 
 const DashboardRecipes = () => {
   const { data, isLoading } = useGetRecipesQuery();
-
+  console.log(data);
   const dispatch = useDispatch();
   const updatedData = data?.map((item, index) => ({
     ...item,
@@ -38,23 +38,47 @@ const DashboardRecipes = () => {
       width: 280,
       headerAlign: "center",
       align: "left",
+      renderCell: ({ row: { recipeName } }) => {
+        return <div className="flex gap-2 items-center">{recipeName}</div>;
+      },
+    },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 100,
+      headerAlign: "center",
+      align: "left",
+      renderCell: ({ row: { image } }) => {
+        return (
+          <div className="flex gap-2 items-center">
+            {
+              <img
+                alt={image}
+                src={image}
+                sx={{ width: 36, height: 36 }}
+                className="border-2 border-primary"
+              />
+            }
+          </div>
+        );
+      },
     },
     {
       field: "author",
       headerName: "Author",
       headerAlign: "center",
       align: "left",
-      minWidth: 250,
+      minWidth: 200,
       renderCell: ({ row: { author } }) => {
         return (
           <div className="flex gap-2 items-center">
             <MuiAvatar
-              alt={author?.name}
+              alt={author?.firstName}
               src={author?.profilePicture}
               sx={{ width: 36, height: 36 }}
               className="border-2 border-primary"
             />
-            {author.name}
+            {author.firstName + " " + author.lastName}
           </div>
         );
       },
@@ -72,13 +96,7 @@ const DashboardRecipes = () => {
         );
         const averageRating =
           sumOfRatings === 0 ? 0 : sumOfRatings / ratings.length;
-        return (
-          <Rating
-            value={averageRating}
-            readOnly={true}
-            size={"medium"}
-          />
-        );
+        return <Rating value={averageRating} readOnly={true} size={"medium"} />;
       },
     },
     {
@@ -106,10 +124,7 @@ const DashboardRecipes = () => {
         {isLoading ? (
           <ComponentLoading />
         ) : (
-          <Table
-            rows={updatedData}
-            cols={cols}
-          />
+          <Table rows={updatedData} cols={cols} />
         )}
       </div>
     </section>

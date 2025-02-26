@@ -33,21 +33,21 @@ const Users = () => {
   const cols = [
     { field: "id", headerName: "ID", width: 100 },
     {
-      field: "name",
-      headerName: "Name",
+      field: "firstName",
+      headerName: "First Name",
       headerAlign: "center",
       align: "left",
       minWidth: 250,
-      renderCell: ({ row: { name, profilePicture } }) => {
+      renderCell: ({ row: { firstName, lastName, profilePicture } }) => {
         return (
           <div className="flex gap-2 items-center">
             <MuiAvatar
-              alt={name}
+              alt={firstName}
               src={profilePicture}
               sx={{ width: 36, height: 36 }}
               className="border-2 border-primary"
             />
-            {name}
+            {firstName + " " + lastName}
           </div>
         );
       },
@@ -64,23 +64,20 @@ const Users = () => {
       headerName: "Role",
       headerAlign: "center",
       minWidth: 300,
-      renderCell: ({ row: { roles } }) => {
+      renderCell: ({ row: { roleId } }) => {
+        console.log(roleId);
         return (
-          <div
-            className={
-              "rounded text-sm py-1 px-3 mx-auto w-[40%] shadow-none bg-gray-200 text-gray-700 flex items-center gap-2 justify-evenly"
-            }
-          >
-            {roles?.includes("Admin") ? (
+          <div className="rounded text-sm py-1 px-3 mx-auto w-[40%] shadow-none bg-gray-200 text-gray-700 flex items-center gap-2 justify-evenly">
+            {roleId.roleName.includes("Admin") ? (
               <MdAdminPanelSettings />
-            ) : roles?.includes("ProUser") ? (
+            ) : roleId.roleName.includes("ProUser") ? (
               <RiAdminFill />
             ) : (
               <BiSolidUser />
             )}
-            {roles?.includes("Admin")
+            {roleId.roleName.includes("Admin")
               ? "Admin"
-              : roles?.includes("ProUser")
+              : roleId.roleName.includes("ProUser")
               ? "Pro User"
               : "Basic User"}
           </div>
@@ -116,10 +113,7 @@ const Users = () => {
         {isLoading ? (
           <ComponentLoading />
         ) : (
-          <Table
-            rows={updatedData}
-            cols={cols}
-          />
+          <Table rows={updatedData} cols={cols} />
         )}
       </div>
     </section>

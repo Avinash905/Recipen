@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Role = require("../models/roleModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -6,7 +7,8 @@ const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find()
       .find({ isDisabled: false })
-      .select(["-password", "-refreshToken", "-favorites"]);
+      .select(["-password", "-refreshToken", "-favorites"])
+      .populate("roleId", "roleName");
     res.status(200).json(users);
   } catch (error) {
     next(error);
@@ -38,10 +40,22 @@ const createUser = async (req, res, next) => {
       return res.status(409).json({ message: "Email already in use" });
     }
 
+    const userRole = await Role.findOne({ roleName: "BasicUser" });
+
+    console.log(userRole._id);
+
+    if (!userRole) {
+      return res.status(500).json({
+        message:
+          "Default role 'BasicUser' not found. Please seed the database with roles.",
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const newUser = await User({
       ...req.body,
       password: hashedPassword,
+      roleId: userRole._id,
     });
 
     await newUser

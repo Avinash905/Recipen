@@ -7,7 +7,7 @@ const index = ({ mainTitle, tagline, type, data }) => {
 
   useEffect(() => {
     const newFilteredData = data?.filter((element) =>
-      element.title.toLowerCase().includes(searchTerm.toLowerCase())
+      element.recipeName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(newFilteredData);
   }, [searchTerm, data]);

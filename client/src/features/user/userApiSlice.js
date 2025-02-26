@@ -3,7 +3,7 @@ import { apiSlice } from "../../redux/apiSlice";
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/users",
+      query: () => "/users/list",
       providesTags: ["users"],
     }),
     createUser: builder.mutation({
