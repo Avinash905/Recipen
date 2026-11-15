@@ -280,14 +280,15 @@ const SingleRecipe = () => {
           <hr />
           <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12">
             {/* Recipe Ingredients */}
-            <div className="rounded-2xl bg-[#f8f3eb] p-6 sm:p-8">
-              <h2 id="ingredients" className="scroll-mt-24 font-serif text-3xl">Ingredients</h2><p className="mt-2 text-sm text-[#6b6257]">Check off items as you cook. Progress is saved on this device.</p><button type="button" onClick={resetChecks} className="mt-3 text-sm font-semibold underline">Reset checklist</button>
-              <ul className="mt-6 flex flex-col gap-4">
+            <div className="h-fit rounded-3xl border border-[#e8e1d7] bg-[#f8f3eb] p-6 sm:p-8">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#80603b]">Before you begin</p>
+              <h2 id="ingredients" className="mt-3 scroll-mt-24 font-serif text-3xl">Ingredients</h2><p className="mt-2 text-sm leading-6 text-[#6b6257]">Check off items as you cook. Progress is saved on this device.</p><button type="button" onClick={resetChecks} className="mt-4 text-sm font-semibold text-[#775421] underline underline-offset-4">Reset checklist</button>
+              <ul className="mt-6 divide-y divide-[#e3d9ca]">
                 {data?.ingredients?.map((ingredient, i) => (
                   <li key={`ingredient-${i + 1}`}>
-                    <label className="flex items-start gap-2">
-                      <input type="checkbox" checked={Boolean(checks[`ingredient-${i}-${ingredient}`])} onChange={(event) => changeCheck(`ingredient-${i}-${ingredient}`, event.target.checked)} className="mt-1 accent-primary" />
-                      <span>{ingredient}</span>
+                    <label className="flex cursor-pointer items-start gap-3 py-4 leading-6">
+                      <input type="checkbox" checked={Boolean(checks[`ingredient-${i}-${ingredient}`])} onChange={(event) => changeCheck(`ingredient-${i}-${ingredient}`, event.target.checked)} className="cooking-check mt-0.5" />
+                      <span className={checks[`ingredient-${i}-${ingredient}`] ? "text-[#776d60] line-through" : "text-[#29251f]"}>{ingredient}</span>
                     </label>
                   </li>
                 ))}
@@ -295,13 +296,14 @@ const SingleRecipe = () => {
             </div>
             {/* Recipe Instructions */}
             <div className="flex flex-col gap-5">
-              <h2 id="method" className="scroll-mt-24 font-serif text-3xl">Method</h2>
-              <ol className="flex flex-col gap-5">
+              <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#80603b]">Let’s get cooking</p><h2 id="method" className="mt-3 scroll-mt-24 font-serif text-3xl">Method</h2><p className="mt-2 text-sm text-[#6b6257]">Mark each step as you finish it.</p></div>
+              <ol className="flex flex-col gap-4">
                 {data?.instructions?.map((instruction, i) => (
                   <li key={`instruction-${i + 1}`}>
-                    <label className="flex items-start gap-3 rounded-xl border border-[#eee7dc] p-4 leading-7">
-                      <input type="checkbox" checked={Boolean(checks[`step-${i}-${instruction}`])} onChange={(event) => changeCheck(`step-${i}-${instruction}`, event.target.checked)} className="mt-2 accent-primary" />
-                      <span><span className="block font-bold text-xl">Step {i + 1}</span>{instruction}</span>
+                    <label className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-5 leading-7 transition-colors sm:p-6 ${checks[`step-${i}-${instruction}`] ? "border-[#d9cbb8] bg-[#f8f3eb]" : "border-[#e8e1d7] bg-white"}`}>
+                      <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f3eadc] font-serif text-lg text-[#775421]">{String(i + 1).padStart(2, "0")}</span>
+                      <span className={`min-w-0 flex-1 pt-1 ${checks[`step-${i}-${instruction}`] ? "text-[#776d60] line-through" : "text-[#433b32]"}`}>{instruction}</span>
+                      <input type="checkbox" aria-label={`Mark step ${i + 1} complete`} checked={Boolean(checks[`step-${i}-${instruction}`])} onChange={(event) => changeCheck(`step-${i}-${instruction}`, event.target.checked)} className="cooking-check mt-2" />
                     </label>
                   </li>
                 ))}

@@ -39,7 +39,7 @@ const Footer = () => {
         </div>
       </div>
       {/* Footer bottom */}
-      <div className="box flex justify-center sm:justify-between flex-col sm:flex-row w-full gap-4">
+      <div className="box !mb-0 flex justify-center sm:justify-between flex-col sm:flex-row w-full gap-4 pb-8">
         <p className="text-sm text-center">
           &copy; {new Date().getFullYear()} Recipen. All rights reserved
         </p>

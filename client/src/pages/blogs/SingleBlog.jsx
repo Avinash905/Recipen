@@ -146,7 +146,7 @@ const SingleBlog = () => {
             <div className="mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-[#f2ece2]">
               {data.image && !imageFailed ? <img src={data.image} alt={data.title} className="h-full w-full object-cover" onError={() => setImageFailed(true)} /> : <span className="flex h-full items-center justify-center font-serif text-xl text-[#8a7e6f]">Story photo unavailable</span>}
             </div>
-            <div className="recipen-article mx-auto mt-9 max-w-3xl"><ReactMarkdown>{data.description || ""}</ReactMarkdown></div>
+            <div className="recipen-article mx-auto mt-10 max-w-[68ch] sm:mt-14"><ReactMarkdown>{data.description || ""}</ReactMarkdown></div>
           </article>
           <hr />
           {/* Blog comment form */}

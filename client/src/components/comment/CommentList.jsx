@@ -15,11 +15,11 @@ export default function CommentList({ data, isFetching, isError, refetch, page, 
     if (data?.page === page && !isFetching && page > totalPages) setPage(totalPages);
   }, [data?.page, isFetching, page, setPage, totalPages]);
   return <section className="w-full sm:w-4/5 mx-auto flex flex-col gap-6" aria-labelledby="comments">
-    <h3 ref={heading} tabIndex={-1} id="comments" className="scroll-mt-24 font-bold text-2xl">Comments</h3>
+    <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#80603b]">From the community</p><h3 ref={heading} tabIndex={-1} id="comments" className="mt-2 scroll-mt-24 font-serif text-3xl">Comments</h3></div>
     {isError && <p role="alert">{data ? "Could not refresh comments. Showing the last loaded comments. " : "Could not load comments. "}<button type="button" className="underline" onClick={refetch}>Try again</button></p>}
     {isError && !data ? null : isFetching && !data ? <p role="status">Loading comments...</p>
         : data?.items?.length ? <div className="flex flex-col gap-6">{data.items.map((comment) => <Comment key={comment._id} comment={comment} userId={userId} handleDeleteComment={onDelete} />)}</div>
-          : <p>{data?.total && page > 1 ? "No comments on this page." : "No comments yet."}</p>}
+          : <p className="rounded-2xl bg-[#f8f3eb] p-6 text-sm leading-6 text-[#62584b]">{data?.total && page > 1 ? "No comments on this page." : "No comments yet. Be the first to share your thoughts."}</p>}
     {data?.total > 0 && <nav aria-label="Comment pages" className="flex flex-wrap items-center gap-4 text-sm">
       <button type="button" disabled={page <= 1 || isFetching} onClick={() => setPage(page - 1)} className="rounded-lg border px-4 py-2 disabled:opacity-40">Previous</button>
       <span>Page {page} of {totalPages}</span>
