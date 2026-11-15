@@ -1,5 +1,6 @@
 import { apiSlice } from "../../redux/apiSlice";
-import { logOut, setCredentials } from "./authSlice";
+import { logOut, setCredentials, sameSession } from "./authSlice";
+import { refreshSession } from "../../redux/refreshSession";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,24 +23,32 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: "/auth/logout",
         method: "POST",
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { dispatch, getState, queryFulfilled }) {
+        const startingToken = getState().auth.token;
         try {
           await queryFulfilled;
-          dispatch(logOut());
         } catch (err) {
           console.error(err);
+        } finally {
+          if (getState().auth.token === startingToken || sameSession(getState().auth.token, startingToken)) {
+            dispatch(logOut());
+            dispatch(apiSlice.util.resetApiState());
+          }
         }
       },
     }),
     refresh: builder.mutation({
-      query: () => ({
-        url: "/auth/refresh",
-        method: "GET",
-      }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async queryFn(_arg, _api, _options, baseQuery) {
+        try { return await refreshSession(() => baseQuery({ url: "/auth/refresh", method: "GET" })); }
+        catch (error) { return { error: { status: "CUSTOM_ERROR", error: error.message, data: { message: error.message } } }; }
+      },
+      async onQueryStarted(arg, { dispatch, getState, queryFulfilled }) {
+        const startingToken = getState().auth.token;
+        const wasPersistent = localStorage.getItem("persist") === "true";
         try {
           const { data } = await queryFulfilled;
-          dispatch(setCredentials({ accessToken: data.accessToken }));
+          if (getState().auth.token !== startingToken || (wasPersistent && localStorage.getItem("persist") !== "true")) return;
+          dispatch(setCredentials(data));
         } catch (err) {
           console.error(err);
         }

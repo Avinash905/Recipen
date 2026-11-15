@@ -1,25 +1,43 @@
 import { Outlet } from "react-router-dom";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRefreshMutation } from "./authApiSlice";
-import PageLoading from "../../components/loading/PageLoading";
+import { useDispatch, useStore } from "react-redux";
+import { logOut, setRestoring } from "./authSlice";
+import { RestoreContext } from "./RestoreContext";
 
 const PersistLogin = () => {
   const persist = localStorage.getItem("persist");
-  const [refresh, { isLoading }] = useRefreshMutation();
+  const [refresh] = useRefreshMutation();
+  const dispatch = useDispatch();
+  const store = useStore();
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    const verifyRefreshToken = async () => {
+  const verifyRefreshToken = useCallback(async () => {
+      setFailed(false);
+      dispatch(setRestoring(true));
+      const startingToken = store.getState().auth.token;
+      let retryableFailure = false;
       try {
-        await refresh();
+        await refresh().unwrap();
       } catch (err) {
-        console.error(err);
+        if ([401, 403].includes(err?.status) && store.getState().auth.token === startingToken) {
+          dispatch(logOut());
+          localStorage.setItem("persist", false);
+        } else if (store.getState().auth.token === startingToken && localStorage.getItem("persist") === "true") {
+          retryableFailure = true;
+          setFailed(true);
+        }
+      } finally {
+        if (!retryableFailure) dispatch(setRestoring(false));
       }
-    };
+    }, [refresh, dispatch, store]);
+  useEffect(() => {
     if (persist === "true") verifyRefreshToken();
-  }, []);
+  }, [persist, verifyRefreshToken]);
 
-  if (isLoading) {
-    return <PageLoading />;
-  } else return <Outlet />;
+  return <RestoreContext.Provider value={{ failed }}>
+    {failed && <div role="alert" className="mx-auto max-w-7xl bg-[#fbf8f3] px-6 py-3 text-sm">Could not restore your session. Check your connection and <button type="button" className="font-semibold underline" onClick={verifyRefreshToken}>try again</button>.</div>}
+    <Outlet />
+  </RestoreContext.Provider>;
 };
 export default PersistLogin;

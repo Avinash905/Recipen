@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Avatar as MuiAvatar,
   Divider,
@@ -19,11 +19,15 @@ import {
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/auth/authApiSlice";
+import { useStore } from "react-redux";
+import { sameSession } from "../../features/auth/authSlice";
 
 const Avatar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const user = useAuth();
+  const store = useStore();
 
   const [logout] = useLogoutMutation();
 
@@ -38,9 +42,16 @@ const Avatar = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const startingToken = store.getState().auth.token;
     setAnchorEl(null);
-    logout();
+    try {
+      await logout().unwrap();
+    } catch (error) {
+      toast.error("Signed out locally, but the server session could not be revoked. Please try again when connected.");
+    }
+    const currentToken = store.getState().auth.token;
+    if (currentToken && !sameSession(currentToken, startingToken)) return;
     localStorage.setItem("persist", false);
     navigate("/auth/signin");
   };
@@ -97,78 +108,48 @@ const Avatar = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
-          <Link
-            to={"/profile"}
-            className="flex items-center"
-          >
+        <MenuItem component={Link} to={"/profile"} onClick={handleClose}>
             <MuiAvatar
               alt={user?.name}
               src={user?.profilePicture}
               sx={{ width: 32, height: 32, mr: 2 }}
             />{" "}
             Profile
-          </Link>
         </MenuItem>
         {(user?.isAdmin || user?.isProUser) && (
           <Box>
             <Divider />
-            <MenuItem>
-              <Link
-                to="/recipe/add"
-                className="flex items-center"
-              >
+            <MenuItem component={Link} to="/recipe/add" onClick={handleClose}>
                 <ListItemIcon>
                   <RestaurantMenu fontSize="small" />
                 </ListItemIcon>
                 Add new recipe
-              </Link>
             </MenuItem>
-            <MenuItem>
-              <Link
-                to="/blog/add"
-                className="flex items-center"
-              >
+            <MenuItem component={Link} to="/blog/add" onClick={handleClose}>
                 <ListItemIcon>
                   <Article fontSize="small" />
                 </ListItemIcon>
-                Add new blog
-              </Link>
+                Write a story
             </MenuItem>
-            <MenuItem>
-              <Link
-                to="/recipe/my-recipes"
-                className="flex items-center"
-              >
+            <MenuItem component={Link} to="/recipe/my-recipes" onClick={handleClose}>
                 <ListItemIcon>
                   <Fastfood fontSize="small" />
                 </ListItemIcon>
                 My recipes
-              </Link>
             </MenuItem>
-            <MenuItem>
-              <Link
-                to="/blog/my-blogs"
-                className="flex items-center"
-              >
+            <MenuItem component={Link} to="/blog/my-blogs" onClick={handleClose}>
                 <ListItemIcon>
                   <Description fontSize="small" />
                 </ListItemIcon>
-                My blogs
-              </Link>
+                My stories
             </MenuItem>
           </Box>
         )}
-        <MenuItem>
-          <Link
-            to="/recipe/saved"
-            className="flex items-center"
-          >
+        <MenuItem component={Link} to="/recipe/saved" onClick={handleClose}>
             <ListItemIcon>
               <Favorite fontSize="small" />
             </ListItemIcon>
             Saved recipes
-          </Link>
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

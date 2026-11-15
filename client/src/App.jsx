@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import {
   AddBlog,
   AddRecipe,
@@ -24,7 +25,8 @@ import {
   CheckoutSuccess,
   CheckoutFailure,
 } from "./pages";
-import { ScrollToTop, PageLoading } from "./components";
+import ScrollToTop from "./components/scrollToTop/ScrollToTop";
+import PageLoading from "./components/loading/PageLoading";
 import { RootLayout, DashboardLayout } from "./layouts";
 import RequireAuth from "./features/auth/RequireAuth";
 import { ToastContainer } from "react-toastify";
@@ -37,7 +39,7 @@ function App() {
   useTitle("Recipen - Home");
 
   return (
-    <Router>
+    <MotionConfig reducedMotion="user"><Router>
       <ScrollToTop />
       <ToastContainer
         autoClose={5000}
@@ -65,6 +67,7 @@ function App() {
                 path="/dashboard"
                 element={<DashboardLayout />}
               >
+                <Route index element={<Navigate to="users" replace />} />
                 <Route
                   path="users"
                   element={<Users />}
@@ -97,10 +100,9 @@ function App() {
                   path=":id"
                   element={<SingleRecipe />}
                 />
-                <Route
-                  path="saved"
-                  element={<SavedRecipes />}
-                />
+                <Route element={<RequireAuth allowedRoles={[ROLES.BasicUser, ROLES.ProUser, ROLES.Admin]} />}>
+                  <Route path="saved" element={<SavedRecipes />} />
+                </Route>
 
                 <Route
                   element={
@@ -181,7 +183,7 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
-    </Router>
+    </Router></MotionConfig>
   );
 }
 

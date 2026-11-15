@@ -1,32 +1,7 @@
-import React from "react";
-import { AllCards, ComponentLoading } from "../../components";
-import { useGetRecipesQuery } from "../../features/recipe/recipeApiSlice";
-import useAuth from "../../hooks/useAuth";
+import CatalogPage from "../../components/catalog/CatalogPage";
+import useTitle from "../../hooks/useTitle";
 
-const index = () => {
-  const { data, isLoading } = useGetRecipesQuery();
-  const user = useAuth();
-
-  const updatedData = data?.filter((obj) =>
-    user?.favorites?.includes(obj._id.toString())
-  );
-
-  return (
-    <>
-      {isLoading ? (
-        <ComponentLoading />
-      ) : (
-        <AllCards
-          mainTitle={"Your Flavorful Collection"}
-          tagline={
-            "Welcome to your personal culinary treasury - a haven for your favorite recipes!"
-          }
-          type={"recipe"}
-          data={updatedData}
-        />
-      )}
-    </>
-  );
-};
-
-export default index;
+export default function SavedRecipes() {
+  useTitle("Recipen - Saved recipes");
+  return <CatalogPage type="recipe" scope="saved" mainTitle="Saved recipes" tagline="Your favorite recipes, ready whenever you are." savedCollection />;
+}

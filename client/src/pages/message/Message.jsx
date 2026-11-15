@@ -1,6 +1,6 @@
-import React from "react";
+import P from "prop-types";
 import Lottie from "lottie-react";
-import { Button } from "../../components";
+import Button from "../../components/button/Button";
 import { Link } from "react-router-dom";
 
 const Message = ({ animation, loop }) => {
@@ -19,5 +19,7 @@ const Message = ({ animation, loop }) => {
     </section>
   );
 };
+
+Message.propTypes = { animation: P.object, loop: P.bool };
 
 export default Message;

@@ -1,4 +1,4 @@
-import React from "react";
+import P from "prop-types";
 import { logoNoBg } from "../../assets";
 import { Link } from "react-router-dom";
 
@@ -16,10 +16,12 @@ const Logo = ({ customCss, hideName = false }) => {
             className="w-full h-full"
           />
         </div>
-        {!hideName && <h1 className="font-bold text-xl">Recipen</h1>}
+        {!hideName && <span className="font-bold text-xl">Recipen</span>}
       </div>
     </Link>
   );
 };
+
+Logo.propTypes = { customCss: P.string, hideName: P.bool };
 
 export default Logo;

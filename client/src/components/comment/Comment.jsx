@@ -1,3 +1,4 @@
+import P from "prop-types";
 import React from "react";
 import { BsCalendarCheck } from "react-icons/bs";
 import { IconButton, Menu, MenuItem, Avatar as MuiAvatar } from "@mui/material";
@@ -7,6 +8,7 @@ import { MoreVert } from "@mui/icons-material";
 const Comment = ({ comment, userId, handleDeleteComment }) => {
   const formattedDate = dateFormat(comment?.date);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuId = React.useId();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -45,9 +47,9 @@ const Comment = ({ comment, userId, handleDeleteComment }) => {
           {comment?.user?._id === userId && (
             <>
               <IconButton
-                aria-label="more"
-                id="long-button"
-                aria-controls={open ? "long-menu" : undefined}
+                aria-label="Comment actions"
+                id={`${menuId}-button`}
+                aria-controls={open ? `${menuId}-menu` : undefined}
                 aria-expanded={open ? "true" : undefined}
                 aria-haspopup="true"
                 size="small"
@@ -56,9 +58,9 @@ const Comment = ({ comment, userId, handleDeleteComment }) => {
                 <MoreVert />
               </IconButton>
               <Menu
-                id="long-menu"
+                id={`${menuId}-menu`}
                 MenuListProps={{
-                  "aria-labelledby": "long-button",
+                  "aria-labelledby": `${menuId}-button`,
                 }}
                 anchorEl={anchorEl}
                 open={open}
@@ -73,5 +75,7 @@ const Comment = ({ comment, userId, handleDeleteComment }) => {
     </div>
   );
 };
+
+Comment.propTypes = { userId: P.string, handleDeleteComment: P.func, comment: P.shape({ _id: P.string, date: P.string, comment: P.string, user: P.shape({ _id: P.string, name: P.string, profilePicture: P.string }) }).isRequired };
 
 export default Comment;

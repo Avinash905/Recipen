@@ -1,4 +1,3 @@
-import React from "react";
 import SubscribeCard from "../cards/SubscribeCard";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { IoDiamondOutline } from "react-icons/io5";

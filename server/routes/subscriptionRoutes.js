@@ -1,5 +1,5 @@
 const express = require("express");
-const { subscribe } = require("../controllers/subscriptionController.js");
+
 const ROLES_LIST = require("../config/rolesList");
 const verifyJwt = require("../middleware/verifyJwt");
 const verifyRoles = require("../middleware/verifyRoles");
@@ -13,7 +13,7 @@ router
       verifyJwt,
       verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.Admin, ROLES_LIST.ProUser),
     ],
-    subscribe
+    (_req, res) => res.status(503).json({ message: "Upgrades are currently unavailable." })
   );
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 
 const BackToTop = () => {
@@ -11,7 +11,8 @@ const BackToTop = () => {
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top with smooth animation
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   useEffect(() => {
@@ -22,12 +23,9 @@ const BackToTop = () => {
   }, []);
 
   return (
-    <div className={`fixed bottom-8 left-6 ${isVisible ? "block" : "hidden"}`}>
-      <MdKeyboardArrowUp
-        onClick={scrollToTop}
-        className="animate-bounce text-5xl bg-primary rounded-full shadow shadow-primaryLight cursor-pointer text-light p-3"
-      />
-    </div>
+    <button type="button" aria-label="Back to top" onClick={scrollToTop} className={`fixed bottom-8 right-6 z-10 rounded-full bg-primary p-3 text-2xl text-[#29251f] shadow shadow-primaryLight focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#775421] ${isVisible ? "hidden sm:block" : "hidden"}`}>
+      <MdKeyboardArrowUp aria-hidden="true" />
+    </button>
   );
 };
 

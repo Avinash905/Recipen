@@ -1,4 +1,4 @@
-import React from "react";
+import P from "prop-types";
 
 const NoData = ({ text }) => {
   return (
@@ -7,5 +7,7 @@ const NoData = ({ text }) => {
     </div>
   );
 };
+
+NoData.propTypes = { text: P.string };
 
 export default NoData;

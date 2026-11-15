@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Logo, Button, Menu, Avatar } from "..";
+import { useState } from "react";
+import Logo from "../logo/Logo";
+import Menu from "./Menu";
+import Avatar from "../avatar/Avatar";
 import { Link, NavLink } from "react-router-dom";
 import { FiLogIn, FiMenu } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
@@ -47,7 +49,7 @@ const Header = () => {
                 to={"/blog"}
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
               >
-                Blogs
+                Stories
               </NavLink>
             </li>
             <li>
@@ -64,22 +66,12 @@ const Header = () => {
         {user ? (
           <Avatar />
         ) : (
-          <Link
-            to={"/auth/signin"}
-            className="hidden md:block"
-          >
-            <Button
-              content={"Sign In"}
-              customCss={"max-w-max rounded-full"}
-              icon={<FiLogIn />}
-            />
-          </Link>
+          <Link to="/auth/signin" className="hidden items-center gap-2 rounded-full bg-primaryLight px-5 py-2 font-semibold text-[#29251f] md:flex">Sign in <FiLogIn aria-hidden="true" /></Link>
         )}
         {/* Menu button */}
-        <FiMenu
-          className="block md:hidden text-xl cursor-pointer"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        />
+        <button type="button" className="block md:hidden p-2 text-xl" aria-label="Open navigation" aria-expanded={!isCollapsed} aria-controls="mobile-navigation" onClick={() => setIsCollapsed(false)}>
+          <FiMenu aria-hidden="true" />
+        </button>
 
         {/* Mobile navbar */}
         <Menu

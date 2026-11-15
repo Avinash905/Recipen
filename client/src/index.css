@@ -25,17 +25,18 @@ h6 {
 }
 
 ::-webkit-scrollbar {
-  @apply w-2 bg-primaryLight;
+  width: 8px;
+  height: 8px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-  @apply border-4 bg-gray-200;
+  background: #f4f0e9;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply border-2 border-primaryLight bg-primaryLight;
+  background: #c0b5a5;
+  border: 2px solid #f4f0e9;
+  border-radius: 999px;
 }
 
 .MuiDataGrid-root {
@@ -65,10 +66,39 @@ h6 {
   @apply border-none bg-gray-100;
 }
 
-input:invalid[focused="true"] {
+input:invalid[data-focused="true"] {
   @apply border-red-500;
 }
 
-input:invalid[focused="true"] ~ span {
+input:invalid[data-focused="true"] ~ span {
   @apply block;
 }
+
+/* Long-form story content, scoped so editor previews and other pages stay unchanged. */
+.recipen-article { color: #433b32; font-size: 1.0625rem; line-height: 1.8; overflow-wrap: anywhere; }
+.recipen-article > * + * { margin-top: 1.25rem; }
+.recipen-article h1, .recipen-article h2, .recipen-article h3, .recipen-article h4 { font-family: Georgia, serif; line-height: 1.25; margin-top: 2rem; }
+.recipen-article h1 { font-size: 2rem; }
+.recipen-article h2 { font-size: 1.75rem; }
+.recipen-article h3 { font-size: 1.4rem; }
+.recipen-article ul, .recipen-article ol { padding-left: 1.5rem; }
+.recipen-article ul { list-style: disc; }
+.recipen-article ol { list-style: decimal; }
+.recipen-article a { color: #805322; text-decoration: underline; }
+.recipen-article blockquote { border-left: 3px solid #d3b991; padding-left: 1rem; color: #6b6257; }
+.recipen-article img { max-width: 100%; height: auto; border-radius: 0.75rem; }
+.recipen-article pre { overflow-x: auto; }
+
+.creator-editor > hr { margin-top: 1.5rem; border-color: #e8e1d7; }
+.creator-editor input:not([type="file"]), .creator-editor textarea { border-color: #d5c9b7; border-radius: 0.75rem; background: #fff; padding: 0.65rem 0.75rem; }
+.creator-editor input:focus, .creator-editor textarea:focus { outline: 2px solid #775421; outline-offset: 1px; }
+.creator-editor form > div:first-child > hr { border-color: #eee7dc; }
+
+/* The catalog already supplies its own labeled clear button. */
+#catalog-search::-webkit-search-cancel-button { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+.story-excerpt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }

@@ -1,4 +1,4 @@
-import React from "react";
+import P from "prop-types";
 import { motion } from "framer-motion";
 
 const Button = ({
@@ -14,7 +14,7 @@ const Button = ({
       <motion.button
         type={type}
         disabled={loading}
-        className={`bg-primaryLight hover:bg-primary text-light py-2 px-5 shadow-lg font-semibold flex items-center justify-center gap-2 max-h-max text-center ${customCss}`}
+        className={`bg-primaryLight hover:bg-primary text-[#29251f] py-2 px-5 shadow-lg font-semibold flex items-center justify-center gap-2 max-h-max text-center ${customCss}`}
         onClick={handleClick}
         whileTap={{ scale: 0.95 }}
       >
@@ -23,7 +23,7 @@ const Button = ({
             <svg
               aria-hidden="true"
               role="status"
-              className="inline w-4 h-4 mr-3 text-white animate-spin"
+              className="inline w-4 h-4 mr-3 text-current animate-spin"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -49,5 +49,7 @@ const Button = ({
     </>
   );
 };
+
+Button.propTypes = { content: P.node, customCss: P.string, type: P.string, loading: P.bool, handleClick: P.func, icon: P.node };
 
 export default Button;

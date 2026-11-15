@@ -1,65 +1,67 @@
-import React, { useState } from "react";
-import { Button, Input, Logo } from "../../components";
+import { useState } from "react";
+import Button from "../../components/button/Button";
+import Input from "../../components/input/Input";
+import Logo from "../../components/logo/Logo";
 import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSignInMutation } from "../../features/auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
+import { apiSlice } from "../../redux/apiSlice";
 
 const SignIn = () => {
   const [formDetails, setFormDetails] = useState({
     email: "",
     password: "",
   });
+  const [formError, setFormError] = useState("");
   const [signIn, { isLoading }] = useSignInMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   useTitle("Recipen - Sign In");
 
   const handleChange = (e) => {
+    setFormError("");
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
 
     try {
-      const userData = await toast.promise(
-        signIn({ ...formDetails }).unwrap(),
-        {
-          pending: "Please wait...",
-          success: "Sign in successfull",
-          error: "Sign in failed",
-        }
-      );
+      const userData = await signIn({ ...formDetails }).unwrap();
+      toast.success("Sign in successful");
+      dispatch(apiSlice.util.resetApiState());
       dispatch(setCredentials({ ...userData }));
       localStorage.setItem("persist", true);
       setFormDetails({ email: "", password: "" });
-      navigate("/");
+      const from = location.state?.from;
+      navigate(from?.pathname ? `${from.pathname}${from.search || ""}${from.hash || ""}` : "/", { replace: true });
     } catch (error) {
-      toast.error(error.data);
-      console.error(error);
+      setFormError(error?.status === 401 ? "Email or password is incorrect." : error?.data?.message || "Sign in failed. Check your details and try again.");
     }
   };
 
   return (
-    <section className="flex w-full h-screen">
+    <section className="min-h-screen bg-[#fbf8f3] px-4 py-8 sm:px-6 lg:flex lg:items-center lg:justify-center">
       {/* Sign in form container */}
-      <div className="basis-1/4 m-auto flex flex-col">
-        <Logo customCss={"mx-auto md:mx-0"} />
+      <div className="mx-auto flex w-full max-w-md flex-col rounded-3xl border border-[#e8e1d7] bg-white px-6 py-8 shadow-sm sm:px-10 sm:py-10 lg:mx-0">
+        <Logo customCss={"mx-auto"} />
         {/* Sign in form heading */}
-        <div className="mt-12 mb-6 flex flex-col gap-3">
-          <h2 className="text-center md:text-left font-bold text-3xl">
+        <div className="mt-9 mb-7 flex flex-col gap-3">
+          <h1 className="text-center font-serif text-4xl text-[#29251f]">
             Welcome back
-          </h2>
-          <p className="text-center md:text-left text-sm">
+          </h1>
+          <p className="text-center text-sm text-[#62584b]">
             New to Recipen?{" "}
             <Link
               to={"/auth/signup"}
-              className="text-primary font-semibold"
+              className="font-semibold text-[#775421] underline underline-offset-4"
             >
               Create an account
             </Link>
@@ -70,6 +72,8 @@ const SignIn = () => {
           className="flex flex-col gap-4"
           onSubmit={handleSubmit}
         >
+          {location.state?.reason && <p className="rounded-xl bg-[#f8f3eb] p-3 text-sm text-[#493b2b]">{location.state.reason}</p>}
+          {formError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{formError}</p>}
           <Input
             type={"email"}
             id={"email"}
@@ -86,18 +90,18 @@ const SignIn = () => {
             handleChange={handleChange}
             value={formDetails.password}
             label={"Password"}
-            placeholder={"At least 6 characters long"}
+            placeholder={"Enter your password"}
           />
           <Button
             content={"Sign in"}
             type={"submit"}
-            customCss={"mt-5 rounded-lg"}
+            customCss={"mt-5 w-full rounded-xl !bg-[#29251f] !py-3 !text-white !shadow-none"}
             loading={isLoading}
           />
         </form>
       </div>
       {/* Sign in banner image */}
-      <div className="hidden md:block basis-1/2 bg-login bg-no-repeat bg-cover bg-center"></div>
+      <div className="hidden lg:ml-8 lg:block lg:h-[560px] lg:w-[38%] lg:max-w-xl lg:rounded-3xl lg:bg-login lg:bg-cover lg:bg-center" role="img" aria-label="A table of food"></div>
     </section>
   );
 };

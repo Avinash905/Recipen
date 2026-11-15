@@ -1,34 +1,40 @@
 import axios from "axios";
+const uploadImage = async (e, setProgress, setFormDetails, setUploadError) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  setUploadError("");
+  if (!["image/jpeg", "image/png"].includes(file.type)) {
+    setUploadError("Please select a JPEG or PNG image.");
+    e.target.value = "";
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    setUploadError("Choose an image no larger than 5 MB.");
+    e.target.value = "";
+    return;
+  }
 
-const uploadImage = async (e, setProgress, setFormDetails, formDetails) => {
-  if (
-    e.target.files[0].type === "image/jpeg" ||
-    e.target.files[0].type === "image/png"
-  ) {
-    const data = new FormData();
-    data.append("file", e.target.files[0]);
+  const field = e.target.id;
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET);
+  data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
 
-    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET);
-
-    const config = {
-      onUploadProgress: (e) => {
-        const { loaded, total } = e;
-        setProgress((loaded / total) * 100);
+  try {
+    setProgress(1);
+    const response = await axios.post(import.meta.env.VITE_CLOUDINARY_BASE_URL, data, {
+      onUploadProgress: ({ loaded, total }) => {
+        if (total) setProgress(Math.min(99, (loaded / total) * 100));
       },
-    };
-
-    data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
-
-    const {
-      data: { url },
-    } = await axios.post(
-      import.meta.env.VITE_CLOUDINARY_BASE_URL,
-      data,
-      config
-    );
-    setFormDetails({ ...formDetails, [e.target.id]: url });
-  } else {
-    console.error("Please select an image in jpeg or png format");
+    });
+    const url = response.data.secure_url || response.data.url;
+    if (!url) throw new Error("Missing image URL");
+    setFormDetails((current) => ({ ...current, [field]: url }));
+    setProgress(100);
+  } catch (error) {
+    setProgress(0);
+    setUploadError("Image upload failed. Please try again.");
+    e.target.value = "";
   }
 };
 

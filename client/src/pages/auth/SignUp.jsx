@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Button, Input, Logo } from "../../components";
+import { useState } from "react";
+import Button from "../../components/button/Button";
+import Input from "../../components/input/Input";
+import Logo from "../../components/logo/Logo";
 import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
@@ -15,48 +17,58 @@ const SignUp = () => {
     password: "",
   });
   const [signUp, { isLoading }] = useSignUpMutation();
+  const [formError, setFormError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
   useTitle("Recipen - Sign Up");
 
   const handleChange = (e) => {
+    setFormError("");
+    setFieldErrors((current) => ({ ...current, [e.target.id]: "" }));
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
+    const errors = {};
+    const name = formDetails.name.trim();
+    if (name.length < 2 || name.length > 100) errors.name = "Enter a name between 2 and 100 characters.";
+    if (formDetails.password.length < 8 || new TextEncoder().encode(formDetails.password).length > 72) errors.password = "Use at least 8 characters and at most 72 bytes.";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length) { document.getElementById(Object.keys(errors)[0])?.focus(); return; }
 
     try {
-      const userData = await toast.promise(
+      await toast.promise(
         signUp({ ...formDetails }).unwrap(),
         {
           pending: "Please wait...",
-          success: "Sign up successfull",
-          error: "Sign up failed",
+          success: "Account created",
+          error: { render: ({ data: error }) => error?.data?.message || "Sign up failed" },
         }
       );
       setFormDetails({ name: "", email: "", password: "" });
       navigate("/auth/signin");
     } catch (error) {
-      toast.error(error.data);
-      console.error(error);
+      setFormError(error?.data?.message || "Could not create your account. Please check your connection and try again.");
     }
   };
 
   return (
-    <section className="flex w-full h-screen">
+    <section className="min-h-screen bg-[#fbf8f3] px-4 py-8 sm:px-6 lg:flex lg:items-center lg:justify-center">
       {/* Sign up form container */}
-      <div className="basis-1/4 m-auto flex flex-col">
-        <Logo customCss={"mx-auto md:mx-0"} />
+      <div className="mx-auto flex w-full max-w-md flex-col rounded-3xl border border-[#e8e1d7] bg-white px-6 py-8 shadow-sm sm:px-10 sm:py-10 lg:mx-0">
+        <Logo customCss={"mx-auto"} />
         {/* Sign up form heading */}
-        <div className="mt-12 mb-6 flex flex-col gap-3">
-          <h2 className="text-center md:text-left font-bold text-3xl">
+        <div className="mt-9 mb-7 flex flex-col gap-3">
+          <h1 className="text-center font-serif text-4xl text-[#29251f]">
             Create an account
-          </h2>
-          <p className="text-center md:text-left text-sm">
+          </h1>
+          <p className="text-center text-sm text-[#62584b]">
             Already have an account?{" "}
             <Link
               to={"/auth/signin"}
-              className="text-primary font-semibold"
+              className="font-semibold text-[#775421] underline underline-offset-4"
             >
               Sign In
             </Link>
@@ -67,6 +79,7 @@ const SignUp = () => {
           className="flex flex-col gap-4"
           onSubmit={handleSubmit}
         >
+          {formError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{formError}</p>}
           <Input
             type={"text"}
             id={"name"}
@@ -74,11 +87,12 @@ const SignUp = () => {
             handleChange={handleChange}
             value={formDetails.name}
             label={"Full Name"}
+            fieldError={fieldErrors.name}
             placeholder={"John Doe"}
             errorMessage={
-              "Name should be more than 3 characters long and should not include special characters!"
+              "Enter a name between 2 and 100 characters."
             }
-            pattern={"^[a-zA-Z]{3,}(?: [a-zA-Z]{3,})*$"}
+
           />
           <Input
             type={"email"}
@@ -89,7 +103,7 @@ const SignUp = () => {
             label={"Email"}
             placeholder={"example@abc.com"}
             errorMessage={"Enter a valid email address!"}
-            pattern={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/}
+
           />
           <Input
             type={"password"}
@@ -98,22 +112,24 @@ const SignUp = () => {
             handleChange={handleChange}
             value={formDetails.password}
             label={"Password"}
-            placeholder={"At least 6 characters long"}
+            fieldError={fieldErrors.password}
+            placeholder={"Password"}
+            helpText={"Use at least 8 characters and at most 72 bytes. Some characters use more than one byte."}
             errorMessage={
-              "Password should be 6-15 characters long and must include at least 1 letter, 1 number and 1 special character!"
+              "Use at least 8 characters and at most 72 bytes."
             }
-            pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$`}
+            pattern={".{8,}"}
           />
           <Button
-            content={"Sign in"}
+            content={"Create account"}
             type={"submit"}
-            customCss={"mt-3 rounded-lg"}
+            customCss={"mt-3 w-full rounded-xl !bg-[#29251f] !py-3 !text-white !shadow-none"}
             loading={isLoading}
           />
         </form>
       </div>
       {/* Sign up banner image */}
-      <div className="hidden md:block basis-1/2 bg-login bg-no-repeat bg-cover bg-center"></div>
+      <div className="hidden lg:ml-8 lg:block lg:h-[560px] lg:w-[38%] lg:max-w-xl lg:rounded-3xl lg:bg-login lg:bg-cover lg:bg-center" role="img" aria-label="A table of food"></div>
     </section>
   );
 };

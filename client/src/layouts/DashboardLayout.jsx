@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Sidebar } from "../components";
+import { useState } from "react";
+import Sidebar from "../components/dashboard/Sidebar";
 import { Outlet } from "react-router-dom";
 import useTitle from "../hooks/useTitle";
 
@@ -8,14 +8,14 @@ const DashboardLayout = () => {
   useTitle("Recipen - Dashboard");
 
   return (
-    <section className="flex">
+    <section className="flex w-full min-w-0">
       <Sidebar
         setIsCollapsed={setIsCollapsed}
         isCollapsed={isCollapsed}
       />
-      <div className="basis-5/6 mx-auto">
+      <main className="flex-1 min-w-0">
         <Outlet />
-      </div>
+      </main>
     </section>
   );
 };

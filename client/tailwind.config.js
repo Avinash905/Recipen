@@ -9,8 +9,7 @@ export default {
         light: "#fffefc",
       },
       backgroundImage: {
-        login:
-          "url('https://images.pexels.com/photos/2454533/pexels-photo-2454533.jpeg?auto=compress&cs=tinysrgb&w=720&dpr=1')",
+        login: "url('./assets/auth-banner.webp')",
         hero: "url('https://images.pexels.com/photos/916925/pexels-photo-916925.jpeg?auto=compress&cs=tinysrgb&w=720&dpr=1')",
       },
     },

@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "..";
+import P from "prop-types";
+import Button from "../button/Button";
 import { BsCheckLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -69,5 +69,7 @@ const SubscribeCard = ({
     </div>
   );
 };
+
+SubscribeCard.propTypes = { title: P.node, icon: P.node, price: P.node, subtitle: P.node, features: P.array, featureTitle: P.node, btnText: P.node, link: P.string };
 
 export default SubscribeCard;

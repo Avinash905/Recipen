@@ -1,17 +1,14 @@
 import { useSelector } from "react-redux";
-import { selectCurrentToken } from "../features/auth/authSlice";
-import jwtDecode from "jwt-decode";
 import { profileBg } from "../assets";
 
 const useAuth = () => {
-  const token = useSelector(selectCurrentToken);
+  const { token, user } = useSelector((state) => state.auth);
   let isProUser = false;
   let isAdmin = false;
 
-  if (token) {
-    const decoded = jwtDecode(token);
+  if (token && user) {
     const { userId, name, email, profilePicture, roles, favorites } =
-      decoded.UserInfo;
+      user;
 
     isProUser = roles.includes("ProUser");
     isAdmin = roles.includes("Admin");
